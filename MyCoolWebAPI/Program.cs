@@ -1,22 +1,26 @@
+using Amazon.SimpleSystemsManagement;
 using Contentful.AspNetCore;
+using Microsoft.Extensions.Configuration;
 
 // Builder and configurations
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 var _configuration = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true).Build();
+    .AddSystemsManager("/Contentful")
+    .Build();
+
+
 
 // Add services to the container.
-
-builder.Services
+services
     .AddContentful(_configuration)
     .AddControllers();
-
+_configuration.GetValue<string>("/Contentful");
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 var app = builder.Build();
 
