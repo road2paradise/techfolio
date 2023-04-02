@@ -1,21 +1,29 @@
-using Contentful.AspNetCore;
+using Amazon;
+using MyCoolWebAPI.IoC;
 
 // Builder and configurations
 var builder = WebApplication.CreateBuilder(args);
-var _configuration = new ConfigurationBuilder()
+var services = builder.Services;
+var configuration = builder.Configuration;
+var _configuration = configuration
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true).Build();
+    .AddSystemsManager("/contentful/", new Amazon.Extensions.NETCore.Setup.AWSOptions
+    {
+        Region = RegionEndpoint.APSoutheast2
+    })
+    .AddJsonFile("appsettings.json", false, true)
+    .AddJsonFile("appsettings.Development.json", false, true);
 
 // Add services to the container.
-
-builder.Services
-    .AddContentful(_configuration)
+services
+    .AddContentfulClient(configuration)
+    .AddHttpClient()
     .AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 var app = builder.Build();
 
