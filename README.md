@@ -2,6 +2,14 @@
 
 ## Welcome
 
-Welcome to my cool web api. This REST api is intended to fetch content hosted in contentful which will be used on my personal CV website.
+**Welcome to my cool web api. This REST api is intended to fetch content hosted in contentful which will be used on my personal CV website.**
 
-More to come in this space...
+## High level architecture options
+
+Currently it is deployed on a lambda with a function URL to fetch everything I have on Contentful of a specific type.
+
+**Problems**
+- **Cold starts** - takes 3 seconds to fetch from a cold start - potentially look at a caching option or just directly call contentful in my front end project.
+
+**Benefits**
+- Don't have to host my web api on an instance and waste money
