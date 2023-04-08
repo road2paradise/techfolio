@@ -13,7 +13,7 @@ env:
   AWS-REGION: 'ap-southeast-2'
   IMAGE-NAME: 'mycoolwebapi'
   IMAGE-TAG: ${{ github.sha }}
-  ECR-REGISTRY: 056331603841.dkr.ecr.us-east-1.amazonaws.com
+  ECR-REPOSITORY: 'mycoolwebapi' 
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -32,27 +32,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          registry: ${{ env.ECR-REGISTRY }}
+          registry: ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}
           region: ${{ env.AWS-REGION }}
 
       - name: Build and tag Docker image
         run: |
           cd ./MyCoolWebAPI
-          docker build -t ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
-          docker tag ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:latest
+          docker build -t ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
+          docker tag ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:latest
 
       - name: Push Docker image to Amazon ECR
         run: |
-          docker push ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ github.sha }}
-          docker push ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:latest
-      # - name: Build and tag Docker image
-      #   id: build-image
-      #   run: |
-      #     docker build -t ${{ env.IMAGE-NAME }}:$GITHUB-SHA .
-      #     docker tag ${{ env.IMAGE-NAME }}:$GITHUB-SHA ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:$GITHUB-SHA
-
-      # - name: Push Docker image to Amazon ECR
-      #   id: push-image
-
-      #   run: |
-      #     docker push ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ env.IMAGE-TAG }}
+          docker push ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }}
+          docker push ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:latest
