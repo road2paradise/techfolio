@@ -4,6 +4,7 @@ on:
   push: 
     branches:
       - master
+      - feature/Docker
 permissions:
  id-token: write
  contents: read
