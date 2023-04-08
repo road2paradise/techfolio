@@ -18,12 +18,12 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::$AWS-ACCOUNT-ID:role/github_actions_deployment_role
-          aws-region: $AWS-REGION
+          role-to-assume: arn:aws:iam::${{ env.AWS-ACCOUNT-ID }}:role/github_actions_deployment_role
+          aws-region: ${{ env.AWS-REGION }}
 
       - name: Build and push Docker image
         run: |
-          docker build -t $IMAGE-NAME .
-          docker tag $IMAGE-NAME:latest AWS-ACCOUNT-ID.dkr.ecr.$AWS-REGION.amazonaws.com/$IMAGE-NAME:latest
-          aws ecr get-login-password --region $AWS-REGION | docker login --username AWS --password-stdin AWS-ACCOUNT-ID.dkr.ecr.$AWS-REGION.amazonaws.com
-          docker push AWS-ACCOUNT-ID.dkr.ecr.$AWS-REGION.amazonaws.com/$IMAGE-NAME:latest
+          docker build -t ${{env.IMAGE-NAME}} .
+          docker tag ${{env.IMAGE-NAME}}:latest ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com/${{env.IMAGE-NAME}}:latest
+          aws ecr get-login-password --region ${{ env.AWS-REGION }} | docker login --username AWS --password-stdin ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com
+          docker push ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com/${{env.IMAGE-NAME}}:latest
