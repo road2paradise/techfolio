@@ -12,6 +12,8 @@ env:
   AWS-ACCOUNT-ID: '056331603841'
   AWS-REGION: 'ap-southeast-2'
   IMAGE-NAME: 'mycoolwebapi'
+  IMAGE-TAG: ${{ github.sha }}
+  ECR-REGISTRY: 056331603841.dkr.ecr.us-east-1.amazonaws.com
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,9 +28,31 @@ jobs:
           aws-region: ${{ env.AWS-REGION }}
           role-session-name: samplerolesession
 
-      - name: Build and push Docker image
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry: ${{ env.ECR-REGISTRY }}
+          region: ${{ env.AWS-REGION }}
+
+      - name: Build and tag Docker image
         run: |
-          docker build -t ${{env.IMAGE-NAME}} .
-          docker tag ${{env.IMAGE-NAME}}:latest ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com/${{env.IMAGE-NAME}}:latest
-          aws ecr get-login-password --region ${{ env.AWS-REGION }} | docker login --username AWS --password-stdin ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com
-          docker push ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com/${{env.IMAGE-NAME}}:latest
+          cd ./MyCoolWebAPI
+          docker build -t ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
+          docker tag ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:latest
+
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ github.sha }}
+          docker push ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:latest
+      # - name: Build and tag Docker image
+      #   id: build-image
+      #   run: |
+      #     docker build -t ${{ env.IMAGE-NAME }}:$GITHUB-SHA .
+      #     docker tag ${{ env.IMAGE-NAME }}:$GITHUB-SHA ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:$GITHUB-SHA
+
+      # - name: Push Docker image to Amazon ECR
+      #   id: push-image
+
+      #   run: |
+      #     docker push ${{ env.ECR-REGISTRY }}/${{ env.IMAGE-NAME }}:${{ env.IMAGE-TAG }}
