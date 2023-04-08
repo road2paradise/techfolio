@@ -8,9 +8,11 @@ permissions:
  id-token: write
  contents: read
 env:
-  AWS-ACCOUNT-ID: 056331603841
+  AWS-ACCOUNT-ID: '056331603841'
   AWS-REGION: 'ap-southeast-2'
-  IMAGE-NAME: mycoolwebapi
+  IMAGE-NAME: 'mycoolwebapi'
+  IMAGE-TAG: ${{ github.sha }}
+  ECR-REPOSITORY: 'mycoolwebapi' 
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,9 +27,19 @@ jobs:
           aws-region: ${{ env.AWS-REGION }}
           role-session-name: samplerolesession
 
-      - name: Build and push Docker image
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry: ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}
+          region: ${{ env.AWS-REGION }}
+
+      - name: Build and tag Docker image
         run: |
-          docker build -t ${{env.IMAGE-NAME}} .
-          docker tag ${{env.IMAGE-NAME}}:latest ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com/${{env.IMAGE-NAME}}:latest
-          aws ecr get-login-password --region ${{ env.AWS-REGION }} | docker login --username AWS --password-stdin ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com
-          docker push ${{ env.AWS-ACCOUNT-ID }}.dkr.ecr.${{ env.AWS-REGION }}.amazonaws.com/${{env.IMAGE-NAME}}:latest
+          cd ./MyCoolWebAPI
+          docker build -t ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
+          docker tag ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
+
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
