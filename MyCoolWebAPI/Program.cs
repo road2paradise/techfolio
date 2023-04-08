@@ -1,4 +1,5 @@
 using Amazon;
+using Microsoft.OpenApi.Models;
 using MyCoolWebAPI.IoC;
 
 // Builder and configurations
@@ -22,7 +23,10 @@ services
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Cool Web Api", Version = "v1" });
+});
 services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 var app = builder.Build();
@@ -31,7 +35,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Cool Web API");
+    });
 }
 
 app.UseHttpsRedirection();
