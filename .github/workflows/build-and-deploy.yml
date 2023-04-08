@@ -4,6 +4,9 @@ on:
   push: 
     branches:
       - master
+permissions:
+ id-token: write
+ contents: read
 env:
   AWS-ACCOUNT-ID: 056331603841
   AWS-REGION: 'ap-southeast-2'
@@ -18,8 +21,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::${{ env.AWS-ACCOUNT-ID }}:role/github_actions_deployment_role
+          role-to-assume: arn:aws:iam::${{ env.AWS-ACCOUNT-ID }}:role/github_actions_role
           aws-region: ${{ env.AWS-REGION }}
+          role-session-name: samplerolesession
 
       - name: Build and push Docker image
         run: |
