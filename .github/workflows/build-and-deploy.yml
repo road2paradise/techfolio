@@ -1,0 +1,29 @@
+name: Build and push image
+run-name: Build and deploy image to AWS ECR.
+on:
+  push: 
+    branches:
+      - master
+env:
+  AWS-ACCOUNT-ID: 056331603841
+  AWS-REGION: 'ap-southeast-2'
+  IMAGE-NAME: mycoolwebapi
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::$AWS-ACCOUNT-ID:role/github_actions_deployment_role
+          aws-region: $AWS-REGION
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $IMAGE-NAME .
+          docker tag $IMAGE-NAME:latest AWS-ACCOUNT-ID.dkr.ecr.$AWS-REGION.amazonaws.com/$IMAGE-NAME:latest
+          aws ecr get-login-password --region $AWS-REGION | docker login --username AWS --password-stdin AWS-ACCOUNT-ID.dkr.ecr.$AWS-REGION.amazonaws.com
+          docker push AWS-ACCOUNT-ID.dkr.ecr.$AWS-REGION.amazonaws.com/$IMAGE-NAME:latest
