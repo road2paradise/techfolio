@@ -9,9 +9,9 @@ permissions:
  id-token: write
  contents: read
 env:
-  AWS-ACCOUNT-ID: 056331603841
+  AWS-ACCOUNT-ID: '056331603841'
   AWS-REGION: 'ap-southeast-2'
-  IMAGE-NAME: mycoolwebapi
+  IMAGE-NAME: 'mycoolwebapi'
 jobs:
   deploy:
     runs-on: ubuntu-latest
