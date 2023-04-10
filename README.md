@@ -1,5 +1,6 @@
 # MyCoolWebAPI
-[![Build and push image](https://github.com/road2paradise/MyCoolWebAPI/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/road2paradise/MyCoolWebAPI/actions/workflows/build-and-deploy.yml)
+[![Build and push image](https://github.com/road2paradise/MyCoolWebAPI/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/road2paradise/MyCoolWebAPI/actions/workflows/build-and-deploy.yml)
+
 ## Welcome
 
 **Welcome to my cool web api. This REST api is intended to fetch content hosted in contentful which will be used on my personal CV website.**
