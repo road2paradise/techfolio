@@ -13,6 +13,8 @@ RUN dotnet restore
 # Copy the rest of the application code to the working directory
 COPY . ./
 
+RUN ls /app/BFF.csproj
+
 # Build the application
 RUN dotnet publish -c Release -o out
 
