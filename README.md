@@ -1,22 +1,21 @@
-# MyCoolWebAPI
-[![Build and push image](https://github.com/road2paradise/MyCoolWebAPI/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/road2paradise/MyCoolWebAPI/actions/workflows/build-and-deploy.yml)
+# Techfolio :computer:
+[![Build and push image](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml)
 
-## Welcome
+## Summary
+This is a website designed to showcase some of my tech skills that I've learnt over my career as a Software Developer.
 
-**Welcome to my cool web api. This REST api is intended to fetch content hosted in contentful which will be used on my personal CV website.**
+## About me
+:watch: I am currently a Software Engineer at Xero working as a Full Stack developer in the Ecosystems team. Our main product is the [XERO APP STORE](https://apps.xero.com/nz) where partners are able to develop against and users are able to utilize the Xero API. Our team focuses on the Billing aspect (Referrals, Subscriptions) and also the Partner Experience to on-board new apps!
 
-## High level architecture options
+## 
 
-Currently it is deployed on a lambda with a function URL to fetch everything I have on Contentful of a specific type.
+# Breakdown of Technology used
+## BFF (Backend for frontend)
 
-8/04/2023 - Decided to explore using ECS and ECR and to use Docker to run my application.
+**NOTE Add a `development.env` at to ./_bff with the correct aws credentials.**
 
-**Problems**
-- **Cold starts** - takes 3 seconds to fetch from a cold start - potentially look at a caching option or just directly call contentful in my front end project.
+## SPA (Single page application)
 
-**Benefits**
-- Don't have to host my web api on an instance and waste money
+- Uses React with Typescript
+- Uses Redux with Slices and Thunk
 
-
-## TO RUN LOCALLY
-Add a `development.env` at the root of the project with the correct aws credentials.

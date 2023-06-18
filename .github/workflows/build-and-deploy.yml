@@ -10,9 +10,9 @@ permissions:
 env:
   AWS-ACCOUNT-ID: '056331603841'
   AWS-REGION: 'ap-southeast-2'
-  IMAGE-NAME: 'mycoolwebapi'
+  IMAGE-NAME: 'bff'
   IMAGE-TAG: ${{ github.sha }}
-  ECR-REPOSITORY: 'mycoolwebapi' 
+  ECR-REPOSITORY: 'bff' 
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          cd ./MyCoolWebAPI
+          cd ./_bff
           docker build -t ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
           docker tag ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
 

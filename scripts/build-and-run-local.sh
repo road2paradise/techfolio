@@ -6,11 +6,11 @@ docker kill $(docker ps -q)
 
 # Build Docker image
 echo "Building local docker image."
-cd ../MyCoolWebAPI
-docker build -t mycoolwebapi-local .
+cd ../_bff
+docker build -t bff-local .
 
 #!/bin/bash
 
 # Run Docker container
 echo "Running docker using local docker image"
-docker run -p 3001:80 -it --env-file=../development.env mycoolwebapi-local
+docker run -p 3001:80 -it --env-file=../development.env bff-local

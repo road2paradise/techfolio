@@ -11,8 +11,8 @@ echo "Authenticating Docker to ECR repository"
 ./docker-login.sh
 
 echo "Pulling latest image from ECR"
-docker pull 056331603841.dkr.ecr.ap-southeast-2.amazonaws.com/mycoolwebapi:latest
-docker tag 056331603841.dkr.ecr.ap-southeast-2.amazonaws.com/mycoolwebapi:latest mycoolwebapi-latest
+docker pull 056331603841.dkr.ecr.ap-southeast-2.amazonaws.com/bff:latest
+docker tag 056331603841.dkr.ecr.ap-southeast-2.amazonaws.com/bff:latest bff-latest
 
 echo "Running"
-docker run -p 3001:80 -it --env-file=../development.env mycoolwebapi-latest
+docker run -p 3001:80 -it --env-file=../development.env bff-latest
