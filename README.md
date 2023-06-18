@@ -1,6 +1,9 @@
 # Techfolio :computer:
 [![Build and push image](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml)
 
+# Whats going on?
+18/6/23 - Currently working on TF and fixed github actions. :thinking:
+
 ## Summary
 This is a website designed to showcase some of my tech skills that I've learnt over my career as a Software Developer.
 
