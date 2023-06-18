@@ -4,6 +4,7 @@ on:
   push: 
     branches:
       - master
+      - feature/*
 permissions:
  id-token: write
  contents: read
@@ -36,7 +37,8 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          cd ./bff 
+          ls
+          cd ./_bff 
           docker build -t ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
           docker tag ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
 
