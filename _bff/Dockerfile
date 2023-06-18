@@ -5,13 +5,15 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Copy the .csproj file to the working directory
-COPY *.csproj ./_bff/
+COPY *.csproj ./
 
 # Restore NuGet packages
 RUN dotnet restore
 
 # Copy the rest of the application code to the working directory
 COPY . ./
+
+RUN ls /app/BFF.csproj
 
 # Build the application
 RUN dotnet publish -c Release -o out
