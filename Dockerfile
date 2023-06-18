@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Copy the .csproj file to the working directory
-COPY *.csproj ./
+COPY *.csproj ./_bff/
 
 # Restore NuGet packages
 RUN dotnet restore
