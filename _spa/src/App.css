@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: "Cascadia Code";
+  font-size: 16px;
+}
+
+h1 {
+  display: inline;
+  font-weight: 900;
+  font-size: 64px;
+}
+
+p {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.typed-cursor {
+  font-size: 72px;  
+}
+
+.App{
+  height: 100vh;
+  width: 100vw;
+}
+
+.App p {
+  margin-top: 64px;
+}
+
+.img--profile-pic {
+  width: 500px;
+  border-radius: 10%;
+}
+
+.logo-grid img {
+  width: 24px;
+}
+
+.Button {
+  text-transform: 'none';
+}
+
