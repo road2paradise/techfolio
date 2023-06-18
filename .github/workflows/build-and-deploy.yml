@@ -36,7 +36,7 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          cd ./_bff
+          cd ./techfolio
           docker build -t ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
           docker tag ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
 
