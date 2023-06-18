@@ -1,8 +1,8 @@
 ﻿using Contentful.Core;
 using Microsoft.AspNetCore.Mvc;
-using MyCoolWebAPI.Models;
+using BFF.Models;
 
-namespace MyCoolWebAPI.Controllers
+namespace BFF.Controllers
 {
     [Route("api/content")]
     [ApiController]
@@ -14,10 +14,10 @@ namespace MyCoolWebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SomeTestType>> Get()
+        public async Task<IEnumerable<Introduction>> Get()
         {
-            var entries = await _contentfulClient.GetEntries<SomeTestType>();
-            return entries.AsEnumerable<SomeTestType>();
+            var entries = await _contentfulClient.GetEntriesByType<Introduction>(nameof(Introduction).ToLowerInvariant());
+            return entries.AsEnumerable<Introduction>();
         }
     }
 }

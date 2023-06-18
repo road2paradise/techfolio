@@ -1,4 +1,4 @@
-﻿namespace MyCoolWebAPI.Models
+﻿namespace BFF.Models
 {
     public class SomeTestType
     {

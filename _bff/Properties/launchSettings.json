@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "MyCoolWebAPI": {
+    "BFF": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

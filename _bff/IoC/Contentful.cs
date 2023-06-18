@@ -2,7 +2,7 @@
 using Contentful.Core;
 using Contentful.Core.Configuration;
 
-namespace MyCoolWebAPI.IoC
+namespace BFF.IoC
 {
     public static class Contentful
     {

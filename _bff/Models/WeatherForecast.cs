@@ -1,4 +1,4 @@
-namespace MyCoolWebAPI
+namespace BFF
 {
     public class WeatherForecast
     {

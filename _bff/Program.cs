@@ -1,6 +1,6 @@
 using Amazon;
 using Microsoft.OpenApi.Models;
-using MyCoolWebAPI.IoC;
+using BFF.IoC;
 
 // Builder and configurations
 var builder = WebApplication.CreateBuilder(args);
@@ -29,20 +29,31 @@ services.AddSwaggerGen(c =>
 });
 services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
+// Configure CORS
+
+services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
+services.AddOpenApiDocument();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Cool Web API");
-    });
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
 }
 
 app.UseHttpsRedirection();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyCoolWebAPI.Controllers
+namespace BFF.Controllers
 {
     [ApiController]
     [Route("[controller]")]
