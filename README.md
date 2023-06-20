@@ -4,7 +4,7 @@
 # Whats going on?
 21/6/23 - Did some reading on Terraform, got bored so looked at automating generating typescript client from my backend.
 
-:tick: Have learnt how to manually generate - this will work for now. In future I want to do what I have seen in my workplace where we auto generate our clients as part of CI.
+:white_check_mark: Have learnt how to manually generate - this will work for now. In future I want to do what I have seen in my workplace where we auto generate our clients as part of CI.
 
 ![](./assets/poc.PNG)
 
