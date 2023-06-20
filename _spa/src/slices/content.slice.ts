@@ -3,13 +3,15 @@ import { Error } from "../models/error";
 import { RootState } from "../store/store";
 import axios from 'axios';
 import { baseURL } from '../constants/url';
+import { ContentClient } from '../clients/client';
 
 export const fetchContent = createAsyncThunk(
     'content/fetchAll',
     async () => {
         try {
-            var response = await axios.get(`${baseURL}/api/content`);
-            return response.data;
+            var client = new ContentClient();
+            var response = await client.get();
+            return response;
         } catch (error) {
             throw error;
         }
