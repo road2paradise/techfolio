@@ -14,6 +14,10 @@
     <PackageReference Include="contentful.csharp" Version="7.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.14" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.18.2" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.19.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 </Project>
