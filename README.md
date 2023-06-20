@@ -6,6 +6,8 @@
 
 :tick: Have learnt how to manually generate - this will work for now. In future I want to do what I have seen in my workplace where we auto generate our clients as part of CI.
 
+![](./assets/poc.PNG)
+
 18/6/23 - Currently working on Terraform and fixed github actions. :thinking:
 
 ## Summary
