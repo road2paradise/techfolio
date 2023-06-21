@@ -25,6 +25,12 @@ jobs:
           ls
           cd ./_bff 
           docker build -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: _bff
   
   release:
     runs-on: ubuntu-latest
@@ -41,12 +47,23 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: samplerolesession
 
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-image
+          path: _bff
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
           registry: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}
           region: ${{ env.AWS_REGION }}
+
+      - name: Load Docker image
+        run: |
+          ls _bff
+          docker load -i _bff/bff.tar
 
       - name: Tag Docker image
         run: |
