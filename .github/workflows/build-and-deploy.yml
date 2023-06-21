@@ -1,21 +1,35 @@
 name: Build and push image
 run-name: Build and deploy image to AWS ECR.
 on:
-  push: 
+  push:
     branches:
-      - master
+      - '*'
 permissions:
- id-token: write
- contents: read
+  id-token: write
+  contents: read
 env:
-  AWS-ACCOUNT-ID: '056331603841'
-  AWS-REGION: 'ap-southeast-2'
-  IMAGE-NAME: 'bff'
-  IMAGE-TAG: ${{ github.sha }}
-  ECR-REPOSITORY: 'bff' 
+  AWS_ACCOUNT_ID: '056331603841'
+  AWS_REGION: 'ap-southeast-2'
+  IMAGE_NAME: 'bff'
+  IMAGE_TAG: ${{ github.sha }}
+  ECR_REPOSITORY: 'bff' 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |
+          ls
+          cd ./_bff 
+          docker build -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+  
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,24 +37,21 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::${{ env.AWS-ACCOUNT-ID }}:role/github_actions_role
-          aws-region: ${{ env.AWS-REGION }}
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
+          aws-region: ${{ env.AWS_REGION }}
           role-session-name: samplerolesession
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          registry: ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}
-          region: ${{ env.AWS-REGION }}
+          registry: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}
+          region: ${{ env.AWS_REGION }}
 
-      - name: Build and tag Docker image
+      - name: Tag Docker image
         run: |
-          ls
-          cd ./_bff 
-          docker build -t ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} .
-          docker tag ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}/${{ env.IMAGE-NAME }}:${{ github.sha }} ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
+          docker tag ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
 
       - name: Push Docker image to Amazon ECR
         run: |
-          docker push ${{env.AWS-ACCOUNT-ID}}.dkr.ecr.ap-southeast-2.amazonaws.com/${{env.ECR-REPOSITORY}}:latest
+          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
