@@ -1,9 +1,10 @@
 name: Build and push image
 run-name: Build and deploy image to AWS ECR.
 on:
+  push:
+    branches:
+      - '*'
   pull_request:
-    types:
-      - opened
 permissions:
   id-token: write
   contents: read
