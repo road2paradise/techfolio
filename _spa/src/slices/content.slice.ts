@@ -1,39 +1,43 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { Error } from "../models/error";
 import { RootState } from "../store/store";
-import axios from 'axios';
-import { baseURL } from '../constants/url';
-import { ContentClient } from '../clients/client';
+import { AssetDto, ContentClient } from '../clients/client';
 
-export const fetchContent = createAsyncThunk(
-    'content/fetchAll',
+export const fetchGreetings = createAsyncThunk(
+    'content/fetchGreetings',
     async () => {
         try {
             var client = new ContentClient();
-            var response = await client.get();
+            var response = await client.getGreetings();
+            return response.greetingsList;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+
+export const fetchAssets = createAsyncThunk(
+    'content/fetchAssets',
+    async () => {
+        try {
+            var client = new ContentClient();
+            var response = await client.getAssets();
             return response;
         } catch (error) {
             throw error;
         }
     }
-)
-export type Introduction = {
-    heading: string,
-    headingList: string[]
-}
-
-export interface Content {
-    introduction: Introduction
-}
-
+);
 export interface ContentState {
-    content: Introduction[],
+    greetings: string[],
+    assets: AssetDto[],
     loadingState: "HAS_NOT_LOADED" | "IS_LOADING" | "HAS_LOADED",
     error?: Error,
 }
 
 const initialState = {
-    content: [],
+    greetings: [],
+    assets: [],
     loadingState: "HAS_NOT_LOADED",
     error: undefined,
 } as ContentState
@@ -45,16 +49,27 @@ export const contentSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchContent.fulfilled, (state, action) => {
-                state.content = action.payload
+            .addCase(fetchGreetings.fulfilled, (state, action) => {
+                state.greetings = action.payload    
                 state.loadingState = "HAS_LOADED"
             })
-            .addCase(fetchContent.rejected, (state, action) => {
+            .addCase(fetchGreetings.rejected, (state, action) => {
                 state.loadingState = "HAS_LOADED"
                 state.error = action.payload as Error
             })
-            .addCase(fetchContent.pending, (state, action) => {
+            .addCase(fetchGreetings.pending, (state, _) => {
                 state.loadingState = "IS_LOADING"
+            })
+            .addCase(fetchAssets.pending, (state, _) => {
+                state.loadingState = "IS_LOADING"
+            })
+            .addCase(fetchAssets.fulfilled, (state, action) => {
+                state.assets = action.payload
+                state.loadingState = "HAS_LOADED"
+            })
+            .addCase(fetchAssets.rejected, (state, action) => {
+                state.loadingState = "HAS_LOADED"
+                state.error = action.payload as Error
             })
   }
 })

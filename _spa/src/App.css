@@ -28,11 +28,6 @@ p {
   margin-top: 64px;
 }
 
-.img--profile-pic {
-  width: 500px;
-  border-radius: 10%;
-}
-
 .logo-grid img {
   width: 24px;
 }
@@ -41,3 +36,13 @@ p {
   text-transform: 'none';
 }
 
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px; /* Optional: Adjust the margin as needed */
+}
+.avatar-container .avatar {
+  width: 256px;
+  height: auto
+}
