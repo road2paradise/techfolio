@@ -2,6 +2,8 @@
 [![Build and push image](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml)
 
 # Whats going on?
+22/6/23 - Did some content / domain modelling for my Contentful content types. Learnt how to work with Rich text fields in Contentful and using a helpful `HtmlRenderer` function to map between rich text and html.
+
 21/6/23 - Did some reading on Terraform, got bored so looked at automating generating typescript client from my backend.
 
 :tick: Have learnt how to manually generate - this will work for now. In future I want to do what I have seen in my workplace where we auto generate our clients as part of CI.

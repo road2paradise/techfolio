@@ -1,4 +1,4 @@
-﻿namespace BFF.Models
+﻿namespace BFF.Models.Contentful
 {
     public class Introduction
     {
