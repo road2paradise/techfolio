@@ -23,8 +23,7 @@ namespace BFF.Controllers
         [Route("/greetings")]
         public async Task<Greetings> GetGreetings()
         {
-            var result = await _contentfulClient.GetEntry<Greetings>("6o2AtQmrWItIfpBquysZh2");
-            return result;
+            return await _contentfulClient.GetEntry<Greetings>("6o2AtQmrWItIfpBquysZh2");
         }
 
         /*
@@ -41,6 +40,10 @@ namespace BFF.Controllers
             // and convert the rich text field into html.
             foreach (var entry in entries)
             {
+                if (string.IsNullOrEmpty(entry.JobTitle))
+                {
+                    continue;
+                }
                 var result = new WorkExperienceDto(entry);
 
                 if (entry.Description != null)
