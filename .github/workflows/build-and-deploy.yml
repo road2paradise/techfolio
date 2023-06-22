@@ -30,7 +30,6 @@ jobs:
   deploy-bff:
     needs: build-bff
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -61,7 +60,6 @@ jobs:
 
   build-and-deploy-spa:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checking out code
         uses: actions/checkout@v3
@@ -73,6 +71,11 @@ jobs:
           role-session-name: samplerolesession
 
       - name: Build React App
-        run: npm install && npm run build
+        run: |
+          ls
+          cd _spa
+          npm install && npm run build
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
+        run: |
+          cd _spa
+          aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
