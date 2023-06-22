@@ -24,8 +24,7 @@ function App() {
   const cvAsset = useSelector(selectCV);
   const profilePictureAsset = useSelector(selectProfilePicture);
   const { assets, body, workExperience, loadingState } = useSelector(selectContent);
-
-  const { greetings, welcomeParagraph, name, jobTitle } = body;
+  const { greetings, welcomeParagraph, name, jobTitle, quotes } = body;
 
   const emptyAssets = !assets || assets.length === 0;
   const emptyBody = !body || !body.name;
@@ -60,25 +59,21 @@ function App() {
     }
   }, [loadingState, greetings, emptyBody]);
 
-  const renderAvatar = () => {
-    if (!emptyAssets && profilePictureAsset) {
-      return (
-        <Avatar className="avatar" alt={profilePictureAsset.title} src={profilePictureAsset.url} />
-      );
-    }
-    return <Avatar>KN</Avatar>;
-  };
-
   return (
     <div className="App">
       <Grid container columns={2} alignItems="center" height="100%" width="100%">
         <Grid xs={1} item>
-          <div className="avatar-container">{renderAvatar()}</div>
+          {!emptyAssets && profilePictureAsset &&
+            <div className="avatar-container">
+               <Avatar className="avatar" alt={profilePictureAsset.title} src={profilePictureAsset.url} />
+            </div>
+           }
           <Box textAlign="center">
             {name && <Headings headingLevel="h2">{name}</Headings>}
             {jobTitle && <Headings headingLevel="h3">{jobTitle}</Headings>}
+            {quotes && <span style={{ fontStyle: 'italic', marginBottom: '16px'}}>{quotes[Math.floor(Math.random()*quotes.length)]}</span>}
             <Container maxWidth="xs">
-              <Grid className="logo-grid" container columns={4}>
+              <Grid className="social-icon-grid" container columns={4}>
                 <Grid xs={1} item>
                 <SocialButton
                     href="https://www.instagram.com/knney_/"

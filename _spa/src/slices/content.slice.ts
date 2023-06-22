@@ -50,6 +50,7 @@ const initialState = {
         welcomeParagraph: "",
         name: "",
         jobTitle: "",
+        quotes: [],
     },
     assets: [],
     workExperience: [],

@@ -167,6 +167,7 @@ export interface WebsiteBodyText {
     name: string;
     welcomeParagraph: string;
     greetings: string[];
+    quotes: string[];
 }
 
 export interface WorkExperienceDto {

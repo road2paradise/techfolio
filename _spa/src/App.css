@@ -40,7 +40,11 @@ p {
   margin-top: 64px;
 }
 
-.logo-grid img {
+.social-icon-grid {
+  margin-top: 16px;
+}
+
+.social-icon-grid img {
   width: 24px;
 }
 
