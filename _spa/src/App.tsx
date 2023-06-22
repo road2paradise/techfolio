@@ -1,26 +1,40 @@
-import {useRef, useEffect} from 'react';
+import { useRef, useEffect } from 'react';
 import './App.css';
-import content from './en-nz';
 import Typed from 'typed.js';
 import { Avatar, Box, Button, Container, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from './store/store';
-import { fetchAssets, fetchGreetings, fetchWorkExperience, selectContent } from './slices/content.slice';
-import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
-import WorkIcon from '@mui/icons-material/Work';
-import dompurify from 'dompurify';
+import {
+  fetchAssets,
+  fetchWebsiteBodyText,
+  fetchWorkExperience,
+  selectCV,
+  selectContent,
+  selectProfilePicture
+} from './slices/content.slice';
 import 'react-vertical-timeline-component/style.min.css';
+import { WorkExperienceSection } from './components/WorkExperienceSection/WorkExperienceSection';
+import { Headings } from './components/Headings/Headings';
+import githubLogo from "./assets/github.png";
+import { SocialButton } from './components/SocialButton/SocialButton';
+
 function App() {
   const el = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
-  const { assets, greetings, workExperience, loadingState } = useSelector(selectContent);
+  const cvAsset = useSelector(selectCV);
+  const profilePictureAsset = useSelector(selectProfilePicture);
+  const { assets, body, workExperience, loadingState } = useSelector(selectContent);
+
+  const { greetings, welcomeParagraph, name, jobTitle } = body;
+
   const emptyAssets = !assets || assets.length === 0;
-  const emptyGreetings = !greetings || greetings.length === 0;
+  const emptyBody = !body || !body.name;
   const emptyWorkExperience = !workExperience || workExperience.length === 0;
+
   useEffect(() => {
     if (loadingState === "HAS_NOT_LOADED") {
-      if (emptyGreetings) {
-        dispatch(fetchGreetings());
+      if (emptyBody) {
+        dispatch(fetchWebsiteBodyText());
       }
       if (emptyAssets) {
         dispatch(fetchAssets());
@@ -28,121 +42,94 @@ function App() {
       if (emptyWorkExperience) {
         dispatch(fetchWorkExperience());
       }
-    } 
-  }, [loadingState, greetings, assets, workExperience, dispatch]);
+    }
+  }, [loadingState, dispatch, emptyBody, emptyAssets, emptyWorkExperience]);
 
   useEffect(() => {
-    if (loadingState === "HAS_LOADED" && !emptyGreetings) {
+    if (loadingState === "HAS_LOADED" && !emptyBody) {
       const typed = new Typed(el.current, {
         strings: greetings,
         typeSpeed: 50,
         backSpeed: 100,
         backDelay: 1000,
         loop: true,
-      })
+      });
       return () => {
         typed.destroy();
-      }
+      };
     }
-  }, [loadingState, greetings]);
+  }, [loadingState, greetings, emptyBody]);
 
   const renderAvatar = () => {
-    if (!emptyAssets) {
+    if (!emptyAssets && profilePictureAsset) {
       return (
-        <Avatar className="avatar" alt={assets[0].title} src={`${assets[0].url}`}/>
-      )   
+        <Avatar className="avatar" alt={profilePictureAsset.title} src={profilePictureAsset.url} />
+      );
     }
-    return null;
-  }
-  
-  const renderVerticalTimeline = () => {
-    if (!emptyWorkExperience) {
-      return (
-        <VerticalTimeline
-          lineColor='black'>
-          {workExperience.map(x => (
-            <VerticalTimelineElement
-              className="vertical-timeline-element--work"
-              contentStyle={{ background: 'black', color: 'white' }}
-              contentArrowStyle={{ borderRight: '7px solid  black' }}
-              date="2011 - present"
-              iconStyle={{ background: 'black', color: '#fff' }}
-              icon={<WorkIcon />}
-            >
-              <h1>{ x.jobTitle }</h1>
-              <h2>{ x.companyName }</h2>
-              { /* Yes I know dangerouslySetInnerHtml can be spooky but we fought through covid and now have sanitizers. */}
-              <p dangerouslySetInnerHTML={{ __html: dompurify.sanitize(x.description, { FORCE_BODY: true }) }}/>
-              </VerticalTimelineElement>
-          ))}
-        </VerticalTimeline>        
-      )
-    }
-    return null;
-  }
+    return <Avatar>KN</Avatar>;
+  };
 
   return (
-    <div className='App'>
+    <div className="App">
       <Grid container columns={2} alignItems="center" height="100%" width="100%">
         <Grid xs={1} item>
-          <div className="avatar-container">
-            { renderAvatar() }
-          </div>
-          <Box
-            textAlign="center"
-          >
-            <h2>{content.name}</h2>
-            <h3>{content.jobTitle}</h3>
+          <div className="avatar-container">{renderAvatar()}</div>
+          <Box textAlign="center">
+            {name && <Headings headingLevel="h2">{name}</Headings>}
+            {jobTitle && <Headings headingLevel="h3">{jobTitle}</Headings>}
             <Container maxWidth="xs">
-                <Grid className='logo-grid' container columns={3}>
-                  <Grid xs={1} item>
-                      <Button href="https://www.facebook.com/IlIlIIlll/">
-                        <img
-                          src="https://www.edigitalagency.com.au/wp-content/uploads/Instagram-logo-glyph-black-white-large-png.png"
-                          alt="instagram-logo" />            
-                      </Button>
-                  </Grid>
-                  <Grid xs={1} item>
-                    <Button href="https://www.instagram.com/knney_/">
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/59/59439.png"
-                        alt="instagram-logo" />            
-                    </Button>
-                  </Grid>
-                  <Grid xs={1} item>
-                    <Button href="https://www.linkedin.com/in/kenny-d-nguyen/">
-                      <img
-                        src="https://www.edigitalagency.com.au/wp-content/uploads/new-linkedin-logo-white-black-png.png"
-                        alt="linkedin-logo" />            
-                    </Button>
-                  </Grid>
+              <Grid className="logo-grid" container columns={4}>
+                <Grid xs={1} item>
+                <SocialButton
+                    href="https://www.instagram.com/knney_/"
+                    src="https://www.edigitalagency.com.au/wp-content/uploads/Instagram-logo-glyph-black-white-large-png.png"
+                    alt="instagram-logo"
+                  />
                 </Grid>
-              </Container>
-            </Box>
+                <Grid xs={1} item>
+                  <SocialButton
+                    href="https://www.facebook.com/IlIlIIlll/"
+                    src="https://cdn-icons-png.flaticon.com/512/59/59439.png"
+                    alt="facebook-logo"
+                  />
+                </Grid>
+                <Grid xs={1} item>
+                <SocialButton
+                    href="https://www.linkedin.com/in/kenny-d-nguyen/"
+                    src="https://www.edigitalagency.com.au/wp-content/uploads/new-linkedin-logo-white-black-png.png"
+                    alt="linkedin-logo"
+                  />
+                </Grid>
+                <Grid xs={1} item>
+                <SocialButton
+                    href="https://github.com/road2paradise"
+                    src={githubLogo}
+                    alt="github-logo"
+                  />
+                </Grid>
+              </Grid>
+            </Container>
+          </Box>
         </Grid>
         <Grid xs={1} item>
-          <Box
-            textAlign="center"
-            padding="100px"
-          >
-            <h1 ref={el} />
-            <p>{content.subTitle}</p>
+          <Box textAlign="center" padding="100px">
+            <Headings ref={el} />
+            {welcomeParagraph && <p>{welcomeParagraph}</p>}
             <Grid container columns={2}>
-              <Grid xs={1}>
-                <Button style={{ color: "white", backgroundColor: "black", textTransform: "none" }}>
-                  Resume
-                </Button>
+              <Grid xs={2}>
+                {cvAsset && (
+                  <Button title={cvAsset.title} href={cvAsset.url} className="external-link-btn">
+                    Curriculum vitae
+                  </Button>
+                )}
               </Grid>
-              <Grid xs={1}>
-                <Button style={{ color: "white", backgroundColor: "black", textTransform: "none" }}>
-                  Portfolio
-                </Button>
-              </Grid>            
             </Grid>
           </Box>
         </Grid>
       </Grid>
-      {renderVerticalTimeline()}
+      <Grid xs={2} item>
+        <WorkExperienceSection workExperience={workExperience} />
+      </Grid>
     </div>
   );
 }

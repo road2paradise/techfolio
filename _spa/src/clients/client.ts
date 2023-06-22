@@ -18,8 +18,8 @@ export class ContentClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:7232";
     }
 
-    getGreetings(): Promise<Greetings> {
-        let url_ = this.baseUrl + "/greetings";
+    getWebsiteBodyText(): Promise<WebsiteBodyText> {
+        let url_ = this.baseUrl + "/website-body-text";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -30,17 +30,17 @@ export class ContentClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetGreetings(_response);
+            return this.processGetWebsiteBodyText(_response);
         });
     }
 
-    protected processGetGreetings(response: Response): Promise<Greetings> {
+    protected processGetWebsiteBodyText(response: Response): Promise<WebsiteBodyText> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Greetings;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as WebsiteBodyText;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -48,7 +48,7 @@ export class ContentClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Greetings>(null as any);
+        return Promise.resolve<WebsiteBodyText>(null as any);
     }
 
     getWorkExperience(): Promise<WorkExperienceDto[]> {
@@ -162,8 +162,11 @@ export class WeatherForecastClient {
     }
 }
 
-export interface Greetings {
-    greetingsList: string[];
+export interface WebsiteBodyText {
+    jobTitle: string;
+    name: string;
+    welcomeParagraph: string;
+    greetings: string[];
 }
 
 export interface WorkExperienceDto {
@@ -179,6 +182,7 @@ export interface AssetDto {
     title: string;
     url: string;
     description: string;
+    type: string;
 }
 
 export interface WeatherForecast {

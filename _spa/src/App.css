@@ -2,6 +2,19 @@ body {
   margin: 0;
   font-family: "Cascadia Code";
   font-size: 16px;
+  background-color: #F2F2F2;
+}
+
+a:visited {
+  color: inherit;
+}
+
+a:hover {
+  color: white;
+}
+
+a:active {
+  color: inherit;
 }
 
 h1 {
@@ -12,16 +25,15 @@ h1 {
 
 p {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .typed-cursor {
-  font-size: 72px;  
+  font-size: 64px;
 }
 
-.App{
+.App {
   height: 100vh;
-  width: 100vw;
 }
 
 .App p {
@@ -33,16 +45,35 @@ p {
 }
 
 .Button {
-  text-transform: 'none';
+  text-transform: none;
 }
 
 .avatar-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16px; /* Optional: Adjust the margin as needed */
 }
+
 .avatar-container .avatar {
   width: 256px;
-  height: auto
+  height: auto;
+}
+
+.introduction-container {
+  height: 100vh;
+  width: 100vw;
+  margin-bottom: 100px;
+}
+
+.work-experience--container {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.external-link-btn {
+  color: white !important;
+  background-color: black  !important;
+  text-transform: none  !important;
+  font-family: "Cascadia Code" !important;
+  font-size: 18px !important;
 }

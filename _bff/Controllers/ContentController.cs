@@ -20,10 +20,10 @@ namespace BFF.Controllers
          * Gets all the Introduction content type from Contentful
          */
         [HttpGet]
-        [Route("/greetings")]
-        public async Task<Greetings> GetGreetings()
+        [Route("/website-body-text")]
+        public async Task<WebsiteBodyText> GetWebsiteBodyText()
         {
-            return await _contentfulClient.GetEntry<Greetings>("6o2AtQmrWItIfpBquysZh2");
+            return await _contentfulClient.GetEntry<WebsiteBodyText>("2VIEKFTaoMHPIsIbUL79cZ");
         }
 
         /*
@@ -33,7 +33,7 @@ namespace BFF.Controllers
         [Route("/work-experience")]
         public async Task<IEnumerable<WorkExperienceDto>> GetWorkExperience()
         {
-            var entries = await _contentfulClient.GetEntries<WorkExperience>();
+            var entries = await _contentfulClient.GetEntriesByType<WorkExperience>("workExperience");
             var results = new List<WorkExperienceDto>();
 
             // This is how to deal with rich text, I loop through each entry
