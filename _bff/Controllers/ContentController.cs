@@ -59,7 +59,7 @@ namespace BFF.Controllers
                 results.Add(result);
             }
 
-            return results;
+            return results.OrderByDescending(s => s.StartDate);
         }
 
         /*
