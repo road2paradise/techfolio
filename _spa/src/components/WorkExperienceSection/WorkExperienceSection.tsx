@@ -5,6 +5,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import { Box } from '@mui/material';
 import { Headings } from '../Headings/Headings';
 import { format } from 'date-fns';
+import "./WorkExperienceSection.css";
 
 type WorkExperienceSectionProps = {
     workExperience: WorkExperienceDto[];
