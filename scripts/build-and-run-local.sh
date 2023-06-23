@@ -13,4 +13,4 @@ docker build -t bff-local .
 
 # Run Docker container
 echo "Running docker using local docker image"
-docker run -p 7232:80 -it --env-file=../development.env bff-local
+docker run -p 5164:80 -p 7232:443 -it --env-file=../development.env bff-local

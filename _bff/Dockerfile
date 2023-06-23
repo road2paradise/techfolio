@@ -13,8 +13,6 @@ RUN dotnet restore
 # Copy the rest of the application code to the working directory
 COPY . ./
 
-RUN ls /app/BFF.csproj
-
 # Build the application
 RUN dotnet publish -c Release -o out
 
@@ -27,8 +25,11 @@ WORKDIR /app
 # Copy the built application from the build image to the new image
 COPY --from=build-env /app/out .
 
-# Expose port 80
+# Expose port 80 for HTTP
 EXPOSE 80
+
+# Expose port 443 for HTTPS
+EXPOSE 443
 
 # Start the application when the container starts
 ENTRYPOINT ["dotnet", "BFF.dll"]
