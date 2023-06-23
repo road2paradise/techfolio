@@ -60,9 +60,9 @@ function App() {
   }, [loadingState, greetings, emptyBody]);
 
   return (
-    <div className="App">
-      <Grid container columns={2} alignItems="center" height="100%" width="100%">
-        <Grid xs={1} item>
+    <Box className="App" sx={{ flexGrow: 1 }}>
+      <Grid className="introduction" spacing={2} container alignItems="center" height="100%" width="100%">
+        <Grid xs={12} md={6} item>
           {!emptyAssets && profilePictureAsset &&
             <div className="avatar-container">
                <Avatar className="avatar" alt={profilePictureAsset.title} src={profilePictureAsset.url} />
@@ -71,7 +71,7 @@ function App() {
           <Box textAlign="center">
             {name && <Headings headingLevel="h2">{name}</Headings>}
             {jobTitle && <Headings headingLevel="h3">{jobTitle}</Headings>}
-            {quotes && <span style={{ fontStyle: 'italic', marginBottom: '16px'}}>{quotes[Math.floor(Math.random()*quotes.length)]}</span>}
+            {quotes && <span className="quotes" style={{ fontStyle: 'italic', marginBottom: '16px'}}>{quotes[Math.floor(Math.random()*quotes.length)]}</span>}
             <Container maxWidth="xs">
               <Grid className="social-icon-grid" container columns={4}>
                 <Grid xs={1} item>
@@ -106,7 +106,7 @@ function App() {
             </Container>
           </Box>
         </Grid>
-        <Grid xs={1} item>
+        <Grid xs={12} md={6} item>
           <Box textAlign="center" padding="100px">
             <Headings ref={el} />
             {welcomeParagraph && <p>{welcomeParagraph}</p>}
@@ -122,10 +122,10 @@ function App() {
           </Box>
         </Grid>
       </Grid>
-      <Grid xs={2} item>
+      <Grid className="work-experience" xs={12} item>
         <WorkExperienceSection workExperience={workExperience} />
       </Grid>
-    </div>
+    </Box>
   );
 }
 
