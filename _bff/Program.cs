@@ -40,8 +40,6 @@ var app = builder.Build();
 app.UseOpenApi();
 app.UseSwaggerUi3();
 
-app.UseHttpsRedirection();
-
 app.MapControllers();
 app.UseCors();
 app.Run();
