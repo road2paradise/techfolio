@@ -3,7 +3,7 @@ import { Error } from "../models/error";
 import { RootState } from "../store/store";
 import { AssetDto, ContentClient, WebsiteBodyText, WorkExperienceDto } from '../clients/client';
 
-const client = new ContentClient();
+const client = new ContentClient(process.env.REACT_APP_API_URL);
 export const fetchWebsiteBodyText = createAsyncThunk(
     'content/fetchWebsiteBodyText',
     async () => {
