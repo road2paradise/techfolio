@@ -23,6 +23,36 @@ h1 {
   font-size: 64px;
 }
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 32px;
+  } 
+  p {
+    font-size: 12px;
+  }
+  .typed-cursor {
+    padding: 0;
+    font-size: 32px !important;
+  }
+  .avatar-container {
+    margin-top: 10vh
+  }
+  .quotes {
+    margin: 10vw;
+  }
+  .introduction {
+    margin-bottom: 30vh;
+  }
+}
+
+.quotes {
+  margin: 10%;
+  font-weight: 300;
+  word-wrap:break-word;
+}
+
+
 p {
   font-weight: 600;
   font-size: 18px;
@@ -36,9 +66,7 @@ p {
   height: 100vh;
 }
 
-.App p {
-  margin-top: 64px;
-}
+
 
 .social-icon-grid {
   margin-top: 16px;

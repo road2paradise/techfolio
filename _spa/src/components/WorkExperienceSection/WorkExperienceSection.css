@@ -1,9 +1,17 @@
 .vertical-timeline-container h1 {
     font-size: 40px;
     color: grey;
-  }
+}
   
-  .vertical-timeline-container h2 {
-    color: grey !important;
-  }
+.vertical-timeline-container h2 {
+  color: grey !important;
+}
   
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .vertical-timeline-container h1 {
+    font-size: 32px;
+    color: grey;
+  }
+}
