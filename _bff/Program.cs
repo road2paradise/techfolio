@@ -29,17 +29,35 @@ services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyHeader()
-               .AllowAnyMethod();
+        builder
+            .WithOrigins("http://localhost:3000", "nguyen-kenny.com")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
+builder.Services.AddHsts(options =>
+{
+    options.IncludeSubDomains = true;
+});
+
 
 var app = builder.Build();
 
-app.UseOpenApi();
-app.UseSwaggerUi3();
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+} else
+{
+    app.UseHsts();
+    app.UseHttpsRedirection();
+
+}
+
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    AllowCachingResponses = false
+});
 
 app.MapControllers();
 app.UseCors();
