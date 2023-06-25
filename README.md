@@ -31,4 +31,10 @@ The BFF does the following:
 - Format the data based on the frontend representation
 - Send the formatted data to the frontend
 
-## 
+## Infrastructure
+
+I am going to follow this architecture described in this [AWS blog](https://aws.amazon.com/blogs/architecture/field-notes-serverless-container-based-apis-with-amazon-ecs-and-amazon-api-gateway/)
+
+Where we can route requests through API Gateway to the BFF through to our ECS cluster - without Cognito as I currently have no use for authentication.
+
+![](./assets/Architecture%20Diagram.png)
