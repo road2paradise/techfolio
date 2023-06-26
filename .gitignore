@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # ignore environment variables
 *.env
+terraform/.terraform/*
