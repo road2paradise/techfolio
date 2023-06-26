@@ -24,7 +24,7 @@ services
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 // Configure CORS
-
+services.AddHealthChecks();
 services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
