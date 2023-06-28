@@ -1,24 +1,18 @@
-.introduction-section {
-    height: 100vh;
-}
-.introduction-section .profile-avatar {
-    width: 350px;
-    height: auto;
-    margin: -10% auto 0;
-    border-style: solid;
-    border-width: 8px;
-    border-color: white;
-}
-
 .grey-section {
-    background-color: grey;
-    height: 50%;
+    background-color: #d1cdcd;
+    height: 50vh;
     display: block;
 }
 
 .white-section {
     height: 50%;
     text-align: center;
+}
+
+.black-section {
+    background-color: #121212;
+    height: 50vh;
+    display: block;
 }
 
 .profile-name-jobtitle-section {
@@ -28,17 +22,52 @@
 }
 
 .welcome-paragraph-section {
-    width: 400px;
+    width: 40vw;
     margin: 20px auto 0;
 }
 
-
-.cv-link-btn {
-    margin-top: 10px;
-    justify-content: center !important ;
-    color: white !important;
-    background-color: black  !important;
-    text-transform: none  !important;
-    font-family: "Cascadia Code" !important;
-    font-size: 18px;
+@media only screen and (max-width: 600px) {
+    .introduction-section .profile-avatar {
+        width: 60vw;
+        margin: -30% auto 0;
+        height: auto;
+        border-style: solid;
+        border-width: 8px;
+        border-color: white;
+    }
 }
+
+@media only screen and (min-width: 600px) {
+    .introduction-section .profile-avatar {
+        width: 60vw;
+        margin: -30% auto 0;
+        height: auto;
+        border-style: solid;
+        border-width: 8px;
+        border-color: white;
+    }
+}
+
+
+@media only screen and (min-width: 768px) {
+    .introduction-section .profile-avatar {
+        width: 60vw;
+        margin: -30% auto 0;
+        height: auto;
+        border-style: solid;
+        border-width: 8px;
+        border-color: white;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .introduction-section .profile-avatar {
+        width: 350px;
+        margin: -10% auto 0;
+        height: auto;
+        border-style: solid;
+        border-width: 8px;
+        border-color: white;
+    }   
+}
+

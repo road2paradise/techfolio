@@ -10,25 +10,27 @@ type DarkModeToggleProps = {
 
 export default function DarkModeToggle({ onThemeChange }: DarkModeToggleProps) {
 
-    const handleThemeChange = (event: React.MouseEvent<HTMLElement>, newTheme: 'light' | 'dark') => {
+    const handleThemeChange = (_: React.MouseEvent<HTMLElement>, newTheme: 'light' | 'dark') => {
         if (newTheme !== null) {
             onThemeChange(newTheme);
         }
     };
 
     return (
-        <ToggleButtonGroup
-            className="dark-mode-btn"
-            exclusive
-            onChange={handleThemeChange}
-            aria-label="theme toggle"
-        >
-            <ToggleButton value="light" aria-label="light theme">
-                <WbSunnyIcon />
-            </ToggleButton>
-            <ToggleButton value="dark" aria-label="dark theme">
-                <Brightness4Icon />
-            </ToggleButton>
-        </ToggleButtonGroup>
+        <>
+            <ToggleButtonGroup
+                className="dark-mode-btn"
+                exclusive
+                onChange={handleThemeChange}
+                aria-label="theme toggle"
+            >
+                <ToggleButton value="light" aria-label="light theme">
+                    <WbSunnyIcon />
+                </ToggleButton>
+                <ToggleButton value="dark" aria-label="dark theme">
+                    <Brightness4Icon />
+                </ToggleButton>
+            </ToggleButtonGroup>
+        </>
     );
 };

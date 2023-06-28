@@ -1,55 +1,95 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAssets, fetchWebsiteBodyText, selectCV, selectContent, selectProfilePicture } from './slices/content.slice';
+import { fetchAssets, fetchWebsiteBodyText, fetchWorkExperience, selectCV, selectContent, selectProfilePicture } from './slices/content.slice';
 import { AppDispatch } from './store/store';
 import IntroductionSection from './components/Sections/IntroductionSection/IntroductionSection';
-import "./AppRoot.css";
 import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import CssBaseline from '@mui/material/CssBaseline';
-import createTheme from '@mui/material/styles/createTheme';
+import { themeSelector } from './themes/themes';
 
+import "./AppRoot.css";
+import { FooterSection } from './components/Sections/FooterSection/FooterSection';
+import { WorkExperienceSection } from './components/WorkExperienceSection/WorkExperienceSection';
+import { ColorRing } from 'react-loader-spinner';
 
 export const AppRoot = () => {
     const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
-    const theme = createTheme({
-        palette: {
-            mode: themeMode,
-        },
-    });
-
     const dispatch = useDispatch<AppDispatch>();
+
+    const theme = themeSelector(themeMode);
     const profilePictureAsset = useSelector(selectProfilePicture);
     const cv = useSelector(selectCV);
-    const { assets, body } = useSelector(selectContent);
+    const { assets, body, workExperience, loadingState } = useSelector(selectContent);
+
     const emptyAssets = !assets || assets.length === 0;
     const emptyBody = !body || !body.name;
+    const emptyWorkExperience = !workExperience || workExperience.length === 0;
 
     const handleThemeChange = (newTheme: 'light' | 'dark') => {
         setThemeMode(newTheme);
     };
+    const renderLoader = () => {
+        {
+            return (
+                <div className='loader-container'>
+                    <ColorRing
+                        visible={true}
+                        height="80"
+                        width="80"
+                        ariaLabel="blocks-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="blocks-wrapper"
+                        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                    />
+                </div>
+            )
+        }
+        return null;
+    }
     useEffect(() => {
         if (emptyAssets) dispatch(fetchAssets());
         if (emptyBody) dispatch(fetchWebsiteBodyText());
-    }, [dispatch, emptyAssets, emptyBody])
+        if (emptyWorkExperience) dispatch(fetchWorkExperience());
+    }, [dispatch, emptyAssets, emptyBody, emptyWorkExperience])
 
-    return (
-        <ThemeProvider
-            theme={theme}>
-            <CssBaseline />
-            <DarkModeToggle
-                onThemeChange={handleThemeChange}
-            />
-            {!emptyAssets && !emptyBody &&
-                <IntroductionSection
-                    profilePicture={profilePictureAsset}
-                    name={body.name}
-                    jobTitle={body.jobTitle}
-                    cv={cv}
-                    welcomeParagraph={body.welcomeParagraph}
+    if (loadingState === "HAS_NOT_LOADED" || loadingState === "IS_LOADING") {
+        return (
+            <div className='loader-container'>
+                <ColorRing
+                    visible={true}
+                    height="80"
+                    width="80"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="blocks-wrapper"
+                    colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
                 />
-            }
-        </ThemeProvider>
+            </div>
+        );
+    } else {
+        return (
+            <>
+                <ThemeProvider
+                    theme={theme}>
+                    <CssBaseline />
+                    <DarkModeToggle
+                        onThemeChange={handleThemeChange}
+                    />
+                    {!emptyAssets && !emptyBody &&
+                        <IntroductionSection
+                            profilePicture={profilePictureAsset}
+                            name={body.name}
+                            jobTitle={body.jobTitle}
+                            cv={cv}
+                            welcomeParagraph={body.welcomeParagraph}
+                        />
+                    }
+                    <WorkExperienceSection workExperience={workExperience} />
+                    <FooterSection />
+                </ThemeProvider>
+            </>
+        )
+    }
 
-    )
 }
