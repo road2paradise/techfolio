@@ -1,3 +1,7 @@
+.vertical-timeline-container {
+    margin-top: 35vh;
+    margin-bottom: 35vh;
+}
 .vertical-timeline-container ul, 
 .vertical-timeline-container h1, 
 .vertical-timeline-container h2,

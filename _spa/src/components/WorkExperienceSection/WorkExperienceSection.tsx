@@ -32,10 +32,10 @@ export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionP
                     <VerticalTimelineElement
                         key={x.companyName}
                         className="vertical-timeline-element--work"
-                        contentStyle={isDark ? { background: 'black', color: 'white', borderRadius: "15px", border: '2px solid white' } : { background: '#d1cdcd', color: 'black', borderRadius: "15px" }}
+                        contentStyle={isDark ? { background: 'black', color: 'white', borderRadius: "15px", outline: '2px solid white' } : { background: '#d1cdcd', color: 'black', borderRadius: "15px" }}
                         contentArrowStyle={isDark ? { borderRight: '7px solid  white', color: "white" } : { borderRight: '7px solid #d1cdcd', color: "#d1cdcd" }}
                         date={`${formatDate(x.startDate)} - ${formatDate(x.endDate)}`}
-                        iconStyle={isDark ? { background: 'black', color: 'white' } : { background: '#d1cdcd', color: 'white' }}
+                        iconStyle={isDark ? { background: 'black', color: 'white' } : { background: '#d1cdcd', color: 'black' }}
                         icon={<WorkIcon />}>
                         <h1>{x.jobTitle}</h1>
                         <h3>{x.companyName}</h3>
