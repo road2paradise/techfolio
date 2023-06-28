@@ -2,16 +2,17 @@ import { WorkExperienceDto } from '../../clients/client'
 import dompurify from 'dompurify';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import WorkIcon from '@mui/icons-material/Work';
-import { Box } from '@mui/material';
-import { Headings } from '../Headings/Headings';
 import { format } from 'date-fns';
 import "./WorkExperienceSection.css";
-
+import 'react-vertical-timeline-component/style.min.css';
+import { Theme, useTheme } from '@mui/material/styles';
 type WorkExperienceSectionProps = {
     workExperience: WorkExperienceDto[];
 }
 
 export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionProps) => {
+    const theme = useTheme<Theme>();
+    const isDark = theme.palette.mode === 'dark';
     if (!workExperience) {
         return null
     }
@@ -23,28 +24,25 @@ export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionP
         return formattedDate;
     };
     return (
-        <>
-            <Box className="work-experience--container">
-                <Headings>Work Experience</Headings>
-            </Box>
+        <div className="vertical-timeline-container">
+            <h1 className="timeline-section-header">Work Experience</h1>
             <VerticalTimeline
-                className="vertical-timeline-container"
-                lineColor='#65735C'>
+                lineColor='#d1cdcd'>
                 {workExperience.map(x => (
-                        <VerticalTimelineElement                    
-                            key={ x.companyName }
-                            className="vertical-timeline-element--work"
-                            contentStyle={{ background: 'black', color: 'grey', borderRadius: "20px"  }}
-                            contentArrowStyle={{ borderRight: '7px solid  black' }}
-                            date={`${formatDate(x.startDate)} - ${formatDate(x.endDate)}` }
-                            iconStyle={{ background: 'black', color: 'white' }}
-                            icon={<WorkIcon />}>
-                            <h1>{ x.jobTitle }</h1>
-                            <h2>{ x.companyName }</h2>
-                            <p dangerouslySetInnerHTML={{ __html: dompurify.sanitize(x.description, { FORCE_BODY: true }) }}/>
-                        </VerticalTimelineElement>
-                    ))}
-            </VerticalTimeline>     
-        </>
+                    <VerticalTimelineElement
+                        key={x.companyName}
+                        className="vertical-timeline-element--work"
+                        contentStyle={isDark ? { background: 'black', color: 'white', borderRadius: "15px", border: '2px solid white' } : { background: '#d1cdcd', color: 'black', borderRadius: "15px" }}
+                        contentArrowStyle={isDark ? { borderRight: '7px solid  white', color: "white" } : { borderRight: '7px solid #d1cdcd', color: "#d1cdcd" }}
+                        date={`${formatDate(x.startDate)} - ${formatDate(x.endDate)}`}
+                        iconStyle={isDark ? { background: 'black', color: 'white' } : { background: '#d1cdcd', color: 'white' }}
+                        icon={<WorkIcon />}>
+                        <h1>{x.jobTitle}</h1>
+                        <h3>{x.companyName}</h3>
+                        <span dangerouslySetInnerHTML={{ __html: dompurify.sanitize(x.description, { FORCE_BODY: true }) }} />
+                    </VerticalTimelineElement>
+                ))}
+            </VerticalTimeline>
+        </div>
     )
 }

@@ -1,17 +1,20 @@
-.vertical-timeline-container h1 {
-    font-size: 40px;
-    color: grey;
+.vertical-timeline-container ul, 
+.vertical-timeline-container h1, 
+.vertical-timeline-container h2,
+.vertical-timeline-container h3 {
+    padding: 0 5% 0 5%;
+    text-align: left;
 }
-  
-.vertical-timeline-container h2 {
-  color: grey !important;
+.vertical-timeline-container .timeline-section-header {
+    text-align: center;
+    margin-bottom: 5%;
+    font-size: 64px;
 }
-  
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  .vertical-timeline-container h1 {
+.vertical-timeline-container h1 {
     font-size: 32px;
-    color: grey;
-  }
+}
+.vertical-timeline-container p {
+    padding: 0 5% 0 5%;
+    text-align: left;
 }

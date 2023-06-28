@@ -1,6 +1,7 @@
 .introduction-section {
-    height: 100vh;
+    height: 150vh
 }
+
 .introduction-section .profile-avatar {
     width: 350px;
     height: auto;
@@ -11,14 +12,20 @@
 }
 
 .grey-section {
-    background-color: grey;
-    height: 50%;
+    background-color: #d1cdcd;
+    height: 50vh;
     display: block;
 }
 
 .white-section {
     height: 50%;
     text-align: center;
+}
+
+.black-section {
+    background-color: #121212;
+    height: 50vh;
+    display: block;
 }
 
 .profile-name-jobtitle-section {
@@ -30,15 +37,4 @@
 .welcome-paragraph-section {
     width: 400px;
     margin: 20px auto 0;
-}
-
-
-.cv-link-btn {
-    margin-top: 10px;
-    justify-content: center !important ;
-    color: white !important;
-    background-color: black  !important;
-    text-transform: none  !important;
-    font-family: "Cascadia Code" !important;
-    font-size: 18px;
 }
