@@ -16,7 +16,6 @@ import 'react-vertical-timeline-component/style.min.css';
 import { WorkExperienceSection } from './components/WorkExperienceSection/WorkExperienceSection';
 import { Headings } from './components/Headings/Headings';
 import githubLogo from "./assets/github.png";
-import { SocialButton } from './components/SocialButton/SocialButton';
 
 function App() {
   const el = useRef(null);
@@ -65,45 +64,13 @@ function App() {
         <Grid xs={12} md={6} item>
           {!emptyAssets && profilePictureAsset &&
             <div className="avatar-container">
-               <Avatar className="avatar" alt={profilePictureAsset.title} src={profilePictureAsset.url} />
+              <Avatar className="avatar" alt={profilePictureAsset.title} src={profilePictureAsset.url} />
             </div>
-           }
+          }
           <Box textAlign="center">
             {name && <Headings headingLevel="h2">{name}</Headings>}
             {jobTitle && <Headings headingLevel="h3">{jobTitle}</Headings>}
-            {quotes && <span className="quotes" style={{ fontStyle: 'italic', marginBottom: '16px'}}>{quotes[Math.floor(Math.random()*quotes.length)]}</span>}
-            <Container maxWidth="xs">
-              <Grid className="social-icon-grid" container columns={4}>
-                <Grid xs={1} item>
-                <SocialButton
-                    href="https://www.instagram.com/knney_/"
-                    src="https://www.edigitalagency.com.au/wp-content/uploads/Instagram-logo-glyph-black-white-large-png.png"
-                    alt="instagram-logo"
-                  />
-                </Grid>
-                <Grid xs={1} item>
-                  <SocialButton
-                    href="https://www.facebook.com/IlIlIIlll/"
-                    src="https://cdn-icons-png.flaticon.com/512/59/59439.png"
-                    alt="facebook-logo"
-                  />
-                </Grid>
-                <Grid xs={1} item>
-                <SocialButton
-                    href="https://www.linkedin.com/in/kenny-d-nguyen/"
-                    src="https://www.edigitalagency.com.au/wp-content/uploads/new-linkedin-logo-white-black-png.png"
-                    alt="linkedin-logo"
-                  />
-                </Grid>
-                <Grid xs={1} item>
-                <SocialButton
-                    href="https://github.com/road2paradise"
-                    src={githubLogo}
-                    alt="github-logo"
-                  />
-                </Grid>
-              </Grid>
-            </Container>
+            {quotes && <span className="quotes" style={{ fontStyle: 'italic', marginBottom: '16px' }}>{quotes[Math.floor(Math.random() * quotes.length)]}</span>}
           </Box>
         </Grid>
         <Grid xs={12} md={6} item>
