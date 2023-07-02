@@ -97,6 +97,8 @@ jobs:
             role-session-name: samplerolesession
         - name: Build deployment package
           run: |
+            ls
+            cd lambda
             python -m pip install --upgrade pip
             pip install boto3 contentful
             zip -r lambda_function.zip lambda_function.py
