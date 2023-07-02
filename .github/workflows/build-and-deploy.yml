@@ -105,4 +105,4 @@ jobs:
         - name: Build and deploy Lambda
           run: |
             ls
-            aws lambda update-function-code --function-name techfolio-contentful --zip-file lambda_function.zip
+            aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda/lambda_function.zip
