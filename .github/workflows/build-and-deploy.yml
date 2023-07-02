@@ -58,27 +58,27 @@ jobs:
   #       run: |
   #         docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
 
-  build-and-deploy-spa:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checking out code
-        uses: actions/checkout@v3
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
-          aws-region: ${{ env.AWS_REGION }}
-          role-session-name: samplerolesession1
-      - name: Build and deploy React App
-        run: |
-          ls
-          cd _spa
-          npm install && npm run build:production
-      - name: Deploy app build to S3 bucket
-        run: |
-          cd _spa
-          aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
+  # build-and-deploy-spa:
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     - name: Checking out code
+  #       uses: actions/checkout@v3
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
+  #         aws-region: ${{ env.AWS_REGION }}
+  #         role-session-name: samplerolesession1
+  #     - name: Build and deploy React App
+  #       run: |
+  #         ls
+  #         cd _spa
+  #         npm install && npm run build:production
+  #     - name: Deploy app build to S3 bucket
+  #       run: |
+  #         cd _spa
+  #         aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
 
   build-and-deploy-lambda:
       runs-on: ubuntu-latest
@@ -109,4 +109,4 @@ jobs:
         - name: Build and deploy Lambda
           run: |
             ls
-            aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda/lambda_function.zip
+            aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda_function.zip
