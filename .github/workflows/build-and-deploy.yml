@@ -69,7 +69,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
           aws-region: ${{ env.AWS_REGION }}
-          role-session-name: samplerolesession
+          role-session-name: samplerolesession1
       - name: Build and deploy React App
         run: |
           ls
@@ -94,7 +94,7 @@ jobs:
           with:
             role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
             aws-region: ${{ env.AWS_REGION }}
-            role-session-name: samplerolesession
+            role-session-name: samplerolesession2
         - name: Build deployment package
           run: |
             ls
