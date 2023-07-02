@@ -95,14 +95,17 @@ jobs:
             role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
             aws-region: ${{ env.AWS_REGION }}
             role-session-name: samplerolesession2
-        - name: Build deployment package
+        - name: Install dependencies
           run: |
-            ls
-            cd lambda
             python -m venv venv
             source venv/bin/activate
             pip install boto3 contentful
-            zip -r lambda_function.zip lambda_function.py venv
+
+        - name: Build deployment package
+          run: |
+            cd lambda
+            zip -r ../lambda_function.zip .
+
         - name: Build and deploy Lambda
           run: |
             ls
