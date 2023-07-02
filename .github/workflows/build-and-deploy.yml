@@ -106,12 +106,12 @@ jobs:
           run: |
             cd lambda
             mkdir package
-            cp lambda_function.py package/
+            ls
             cp -r ../venv/lib/python3.10/site-packages/* package/
-            cd lambda/package
+            cd package
             zip -r ../../lambda_function.zip .
 
         - name: Deploy Lambda
           run: |
             ls
-            aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda/package/lambda_function.zip
+            aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda_function.zip
