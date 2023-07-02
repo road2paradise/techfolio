@@ -1,8 +1,7 @@
-name: Build and push image
+name: Build and push project
 on:
   push:
     branches:
-    - 'feature/*'
     - '*'
 
 permissions:
@@ -12,74 +11,30 @@ permissions:
 env:
   AWS_ACCOUNT_ID: '056331603841'
   AWS_REGION: 'ap-southeast-2'
-  IMAGE_NAME: 'bff'
-  IMAGE_TAG: ${{ github.sha }}
-  ECR_REPOSITORY: 'bff'
   BUCKET_NAME: 'techfolio'
 
 jobs:
-  # Pause this for now as I actually dont need to build and run a BFF.
-  # build-bff:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-
-  #     - name: Dotnet build
-  #       run: dotnet build _bff
-  # deploy-bff:
-  #   needs: build-bff
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-
-  #     - name: Build and tag Docker image
-  #       run: |
-  #         cd _bff
-  #         docker build -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
-  #         docker tag ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
-
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
-  #         aws-region: ${{ env.AWS_REGION }}
-  #         role-session-name: samplerolesession
-
-  #     - name: Login to Amazon ECR
-  #       id: login-ecr
-  #       uses: aws-actions/amazon-ecr-login@v1
-  #       with:
-  #         registry: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}
-  #         region: ${{ env.AWS_REGION }}
-
-  #     - name: Push Docker image to Amazon ECR
-  #       run: |
-  #         docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
-
-  # build-and-deploy-spa:
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     - name: Checking out code
-  #       uses: actions/checkout@v3
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
-  #         aws-region: ${{ env.AWS_REGION }}
-  #         role-session-name: samplerolesession1
-  #     - name: Build and deploy React App
-  #       run: |
-  #         ls
-  #         cd _spa
-  #         npm install && npm run build:production
-  #     - name: Deploy app build to S3 bucket
-  #       run: |
-  #         cd _spa
-  #         aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
+  build-and-deploy-spa:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: samplerolesession1
+      - name: Build and deploy React App
+        run: |
+          ls
+          cd _spa
+          npm install && npm run build:production
+      - name: Deploy app build to S3 bucket
+        run: |
+          cd _spa
+          aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
 
   build-and-deploy-lambda:
       runs-on: ubuntu-latest
