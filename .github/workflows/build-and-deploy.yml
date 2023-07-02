@@ -107,6 +107,7 @@ jobs:
             cd lambda
             mkdir package
             ls
+            cp lambda_function.py package/
             cp -r ../venv/lib/python3.10/site-packages/* package/
             cd package
             zip -r ../../lambda_function.zip .
