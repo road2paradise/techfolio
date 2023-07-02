@@ -17,46 +17,46 @@ env:
   BUCKET_NAME: 'techfolio'
 
 jobs:
-  build-bff:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # Pause this for now as I actually dont need to build and run a BFF.
+  # build-bff:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Dotnet build
-        run: dotnet build _bff
+  #     - name: Dotnet build
+  #       run: dotnet build _bff
+  # deploy-bff:
+  #   needs: build-bff
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-  deploy-bff:
-    needs: build-bff
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #     - name: Build and tag Docker image
+  #       run: |
+  #         cd _bff
+  #         docker build -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
+  #         docker tag ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
 
-      - name: Build and tag Docker image
-        run: |
-          cd _bff
-          docker build -t ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
-          docker tag ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
+  #         aws-region: ${{ env.AWS_REGION }}
+  #         role-session-name: samplerolesession
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
-          aws-region: ${{ env.AWS_REGION }}
-          role-session-name: samplerolesession
+  #     - name: Login to Amazon ECR
+  #       id: login-ecr
+  #       uses: aws-actions/amazon-ecr-login@v1
+  #       with:
+  #         registry: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}
+  #         region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}
-          region: ${{ env.AWS_REGION }}
-
-      - name: Push Docker image to Amazon ECR
-        run: |
-          docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+  #     - name: Push Docker image to Amazon ECR
+  #       run: |
+  #         docker push ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-2.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
 
   build-and-deploy-spa:
     runs-on: ubuntu-latest
@@ -95,8 +95,11 @@ jobs:
             role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
             aws-region: ${{ env.AWS_REGION }}
             role-session-name: samplerolesession
-        - name: Build and deploy React App
+        - name: Build deployment package
           run: |
             python -m pip install --upgrade pip
             pip install boto3 contentful
+            zip -r lambda_function.zip lambda_function.py
+        - name: Build and deploy Lambda
+          run: |
             aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda_function.zip
