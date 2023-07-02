@@ -99,9 +99,10 @@ jobs:
           run: |
             ls
             cd lambda
-            python -m pip install --upgrade pip
+            python -m venv venv
+            source venv/bin/activate
             pip install boto3 contentful
-            zip -r lambda_function.zip lambda_function.py
+            zip -r lambda_function.zip lambda_function.py venv
         - name: Build and deploy Lambda
           run: |
             ls
