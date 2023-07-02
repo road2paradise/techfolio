@@ -79,3 +79,20 @@ jobs:
         run: |
           cd _spa
           aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
+  
+  build-and-deploy-lambda:
+   runs-on: ubuntu-latest
+   steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github_actions_role
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: samplerolesession
+      - name: Build and deploy Contentful Lambda
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3 contentful
+          aws lambda update-function-code --function-name techfolio-contentful --zip-file fileb://lambda_function.zip

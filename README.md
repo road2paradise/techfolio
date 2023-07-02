@@ -2,6 +2,12 @@
 [![Build and push image](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml/badge.svg?branch=master)](https://github.com/road2paradise/techfolio/actions/workflows/build-and-deploy.yml)
 
 # Whats going on?
+29/6/2023 - Did some research and after hosting my backend on AWS using ECS , I decided to go back to the drawing board with my design and decided to use contentful webhooks + Lambda's to serve content. Contentful will publish webhooks to my lambda and my lambda will trigger a fetch to fetch all my static content from Contentful API's and dump them into s3 where my static website will be pulling content from. 
+- This becomes fully serverless , no need to worry about $$$
+- No backend
+- No maintenance, only front end components
+- Lambda's only trigger on publishing new content on Contentful - saving heaps of $$$.
+
 22/6/23 - Did some content / domain modelling for my Contentful content types. Learnt how to work with Rich text fields in Contentful and using a helpful `HtmlRenderer` function to map between rich text and html.
 
 21/6/23 - Did some reading on Terraform, got bored so looked at automating generating typescript client from my backend.
