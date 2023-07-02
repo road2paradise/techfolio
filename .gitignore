@@ -364,4 +364,9 @@ FodyWeavers.xsd
 
 # ignore environment variables
 *.env
+
+# genearated code
 terraform/.terraform/*
+
+_spa/src/constants/content.json
+lambda/output.json

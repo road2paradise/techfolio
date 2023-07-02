@@ -1,0 +1,35 @@
+import json
+import boto3
+import contentful
+
+# Function to help get parameters from parameter store;
+
+
+def get_parameter(parameter_name):
+    ssm_client = boto3.client('ssm')
+    response = ssm_client.get_parameter(
+        Name=parameter_name
+    )
+    return response['Parameter']['Value']
+
+
+s3 = boto3.client('s3')
+space_id = get_parameter("/contentful/spaceId")
+access_token = get_parameter("/contentful/deliveryapikey")
+client = contentful.Client(space_id, access_token)
+
+# Fetch data from Contentful
+entries = client.entries()
+
+# Prepare data for upload to S3
+data = []
+
+for entry in entries:
+    data.append(entry.raw)
+
+# Specify the file path where you want to write the JSON data
+file_path = "../_spa/src/constants/content.json"
+
+# Write data to the file
+with open(file_path, "w") as file:
+    json.dump(data, file)
