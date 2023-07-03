@@ -20,15 +20,16 @@ client = contentful.Client(space_id, access_token)
 
 # Fetch data from Contentful
 entries = client.entries()
+assets = client.assets()
 
 # Prepare data for upload to S3
 data = []
-
 for entry in entries:
     data.append(entry.raw)
-
+for asset in assets:
+    data.append(asset.raw)
 # Specify the file path where you want to write the JSON data
-file_path = "../_spa/src/constants/content.json"
+file_path = "../_spa/public/content.json"
 
 # Write data to the file
 with open(file_path, "w") as file:
