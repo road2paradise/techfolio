@@ -34,7 +34,7 @@ jobs:
       - name: Deploy app build to S3 bucket
         run: |
           cd _spa
-          aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
+          aws s3 sync --exclude "content.json" ./build/ s3://${{ env.BUCKET_NAME }} --delete
 
   build-and-deploy-lambda:
       runs-on: ubuntu-latest
