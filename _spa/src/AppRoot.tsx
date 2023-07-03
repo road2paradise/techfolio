@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAssets, fetchWebsiteBodyText, fetchWorkExperience, selectCV, selectContent, selectProfilePicture } from './slices/content.slice';
+import { fetchAssets, fetchWebsiteBodyText, fetchWorkExperience, selectContent, selectProfilePicture } from './slices/content.slice';
 import { AppDispatch } from './store/store';
 import IntroductionSection from './components/Sections/IntroductionSection/IntroductionSection';
 import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle';
@@ -19,7 +19,6 @@ export const AppRoot = () => {
 
     const theme = themeSelector(themeMode);
     const profilePictureAsset = useSelector(selectProfilePicture);
-    const cv = useSelector(selectCV);
     const { assets, body, workExperience, loadingState } = useSelector(selectContent);
 
     const emptyAssets = !assets || assets.length === 0;
@@ -59,12 +58,11 @@ export const AppRoot = () => {
                     <DarkModeToggle
                         onThemeChange={handleThemeChange}
                     />
-                    {!emptyAssets && !emptyBody &&
+                    {!emptyBody && !emptyAssets &&
                         <IntroductionSection
                             profilePicture={profilePictureAsset}
                             name={body.name}
                             jobTitle={body.jobTitle}
-                            cv={cv}
                             welcomeParagraph={body.welcomeParagraph}
                         />
                     }

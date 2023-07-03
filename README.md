@@ -25,6 +25,9 @@ This is a website designed to showcase some of my tech skills that I've learnt o
 :watch: I am currently a Software Engineer at Xero working as a Full Stack developer in the Ecosystems team. Our main product is the [XERO APP STORE](https://apps.xero.com/nz) where partners are able to develop against and users are able to utilize the Xero API. Our team focuses on the Billing aspect (Referrals, Subscriptions) and also the Partner Experience to on-board new apps!
 
 
+## Things you must do to ensure the project is able to be run
+- To generate contentful types automagically simply fill in the `.env.development` file using the duplicate template adding in your own things
+- 
 # Technologies used
 
 ## BFF (Backend for front end)

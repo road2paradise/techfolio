@@ -21,12 +21,14 @@ def lambda_handler(event, context):
 
     # Fetch data from Contentful
     entries = client.entries()
+    assets = client.assets()
 
     # Prepare data for upload to S3
     data = []
-
     for entry in entries:
         data.append(entry.raw)
+    for asset in assets:
+        data.append(asset.raw)
 
     # Specify the file path where you want to write the JSON data
     # Upload data to S3 bucket
