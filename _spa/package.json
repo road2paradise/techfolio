@@ -40,7 +40,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:production": "env-cmd -f .env.production react-scripts build",
+    "build:production": "react-scripts build",
     "contentful-typescript-codegen": "env-cmd -f .env.development contentful-typescript-codegen --output src/generated/contentful.d.ts"
   },
   "eslintConfig": {
