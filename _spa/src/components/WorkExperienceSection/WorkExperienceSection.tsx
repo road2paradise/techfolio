@@ -37,7 +37,7 @@ export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionP
                         className="vertical-timeline-element--work"
                         contentStyle={isDark ? { background: 'black', color: 'white', borderRadius: "15px", outline: '2px solid white' } : { background: '#d1cdcd', color: 'black', borderRadius: "15px" }}
                         contentArrowStyle={isDark ? { borderRight: '7px solid  white', color: "white" } : { borderRight: '7px solid #d1cdcd', color: "#d1cdcd" }}
-                        // date={`${formatDate(x.startDate)} - ${formatDate(x.endDate)}`}
+                        date={`${formatDate(x.startDate)} - ${x.endDate ? formatDate(x.endDate) : "Present"}`}
                         iconStyle={isDark ? { background: 'black', color: 'white' } : { background: '#d1cdcd', color: 'black' }}
                         icon={<WorkIcon />}>
                         <h1>{x.jobTitle}</h1>
