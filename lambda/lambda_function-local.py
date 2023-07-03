@@ -31,6 +31,15 @@ for asset in assets:
 # Specify the file path where you want to write the JSON data
 file_path = "../_spa/public/content.json"
 
+# filter out information that we dont want to expose.
+filtered_array = []
+for item in data:
+    new_item = item.copy()
+    del item["sys"]["space"]
+    del item["sys"]["environment"]
+    del item["sys"]["createdAt"]
+    del item["sys"]["revision"]
+    filtered_array.append(new_item)
 # Write data to the file
 with open(file_path, "w") as file:
-    json.dump(data, file)
+    json.dump(filtered_array, file)

@@ -35,8 +35,18 @@ def lambda_handler(event, context):
     bucket_name = 'techfolio'
     file_name = 'content.json'
 
+    # Filter out information that we dont want to expose.
+    filtered_array = []
+    for item in data:
+        new_item = item.copy()
+        del item["sys"]["space"]
+        del item["sys"]["environment"]
+        del item["sys"]["createdAt"]
+        del item["sys"]["revision"]
+        filtered_array.append(new_item)
+
     s3.put_object(
-        Body=json.dumps(data),
+        Body=json.dumps(filtered_array),
         Bucket=bucket_name,
         Key=file_name
     )
