@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { Error } from "../models/error";
 import { RootState } from "../store/store";
-import { AssetDto, ContentClient, WebsiteBodyText, WorkExperienceDto } from '../clients/client';
+import { IWebsiteBodyTextFields, IWorkExperienceFields } from '../generated/contentful';
+import { mapAssets, mapWebsiteBodyText, mapWorkExperience } from '../helpers/mappers';
+import { Asset } from 'contentful';
 
-const client = new ContentClient(process.env.REACT_APP_API_URL);
 export const fetchWebsiteBodyText = createAsyncThunk(
     'content/fetchWebsiteBodyText',
     async () => {
         try {
-            return await client.getWebsiteBodyText();
+        return mapWebsiteBodyText();
         } catch (error) {
             throw error;
         }
@@ -19,7 +20,7 @@ export const fetchAssets = createAsyncThunk(
     'content/fetchAssets',
     async () => {
         try {
-            return await client.getAssets();
+            return await mapAssets();
         } catch (error) {
             throw error;
         }
@@ -30,16 +31,16 @@ export const fetchWorkExperience = createAsyncThunk(
     'content/fetchWorkExperience',
     async () => {
         try {
-            return await client.getWorkExperience();
+            return await mapWorkExperience()
         } catch (error) {
             throw error;
         }
     }
 )
 export interface ContentState {
-    body: WebsiteBodyText,
-    assets: AssetDto[],
-    workExperience: WorkExperienceDto[],
+    body: IWebsiteBodyTextFields,
+    assets: Asset[],
+    workExperience: IWorkExperienceFields[],
     loadingState: "HAS_NOT_LOADED" | "IS_LOADING" | "HAS_LOADED",
     error?: Error,
 }
@@ -66,7 +67,7 @@ export const contentSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchWebsiteBodyText.fulfilled, (state, action) => {
-                state.body = action.payload    
+                state.body = action.payload[0]    
                 state.loadingState = "HAS_LOADED"
             })
             .addCase(fetchWebsiteBodyText.rejected, (state, action) => {
@@ -102,6 +103,6 @@ export const contentSlice = createSlice({
 })
 
 export const selectContent = (state: RootState): ContentState => state.content;
-export const selectProfilePicture = (state: RootState): AssetDto => state.content.assets.filter(a => a.type.toLowerCase().includes("image"))[0];
-export const selectCV = (state: RootState): AssetDto => state.content.assets.filter(a => a.type.toLowerCase().includes("pdf") && a.title.toLowerCase().includes("cv"))[0];
+export const selectProfilePicture = (state: RootState): Asset => state.content.assets.filter(a => a.fields.file?.contentType!.toString().toLowerCase().includes("image"))[0];
+export const selectCV = (state: RootState): Asset => state.content.assets.filter(a => a.sys.type.toLowerCase().includes("pdf"))[0];
 export default contentSlice.reducer
