@@ -5,6 +5,12 @@ import { IWebsiteBodyTextFields, IWorkExperienceFields } from '../generated/cont
 import { mapAssets, mapWebsiteBodyText, mapWorkExperience } from '../helpers/mappers';
 import { Asset } from 'contentful';
 
+const compareByDate = (a: IWorkExperienceFields, b: IWorkExperienceFields):any => {
+    const dateA = new Date(a.startDate);
+    const dateB = new Date(b.startDate);
+    return  dateB.getTime() - dateA.getTime();
+};
+
 export const fetchWebsiteBodyText = createAsyncThunk(
     'content/fetchWebsiteBodyText',
     async () => {
@@ -31,7 +37,8 @@ export const fetchWorkExperience = createAsyncThunk(
     'content/fetchWorkExperience',
     async () => {
         try {
-            return await mapWorkExperience()
+            const content = mapWorkExperience();
+            return (await content).sort(compareByDate)
         } catch (error) {
             throw error;
         }

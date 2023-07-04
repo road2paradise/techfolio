@@ -3,7 +3,7 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 import WorkIcon from '@mui/icons-material/Work';
 import { format } from 'date-fns';
 import { Theme, useTheme } from '@mui/material/styles';
-import { IWorkExperienceFields } from '../../generated/contentful';
+import { IWorkExperienceFields } from '../../../generated/contentful';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 
 import "./WorkExperienceSection.css";
@@ -27,7 +27,7 @@ export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionP
         return formattedDate;
     };
     return (
-        <div className="vertical-timeline-container">
+        <div className="workExperience vertical-timeline-container">
             <h1 className="timeline-section-header">Work Experience</h1>
             <VerticalTimeline
                 lineColor='#d1cdcd'>

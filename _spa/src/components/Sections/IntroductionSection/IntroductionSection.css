@@ -9,12 +9,6 @@
     text-align: center;
 }
 
-.black-section {
-    background-color: #121212;
-    height: 50vh;
-    display: block;
-}
-
 .profile-name-jobtitle-section {
     font-weight: 300;
     text-transform: uppercase;
@@ -22,9 +16,30 @@
 }
 
 .welcome-paragraph-section {
-    width: 40vw;
+    width: 75vw;
     margin: 20px auto 0;
+    text-overflow: ellipsis;
 }
+
+.scroll-arrow {
+    opacity: 0;
+    animation: appear-and-move 4s forwards;
+  }
+  
+  @keyframes appear-and-move {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-20px);
+    }
+  }
+
 
 @media only screen and (max-width: 600px) {
     .introduction-section .profile-avatar {
@@ -34,6 +49,16 @@
         border-style: solid;
         border-width: 8px;
         border-color: white;
+    }
+    .grey-section {
+        background-color: #d1cdcd;
+        height: 25vh;
+        display: block;
+    }
+    
+    .white-section {
+        height: 25vh;
+        text-align: center;
     }
 }
 
