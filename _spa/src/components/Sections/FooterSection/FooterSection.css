@@ -2,21 +2,12 @@
     background-color: #b5b3b3;
     padding: 25px 0px 5px 0;
     text-align: center;
-    min-height: 20vh;
-}
-
-.dark-footer-container {
-    background-color: #121212;
-    padding: 25px 0px 5px 0;
-    text-align: center;
-    min-height: 20vh;
-    margin-top: 10vh;
+    min-height: 15vh;
 }
 
 .social-icons-container {
     display: flex;
     justify-content: space-between;
-    margin: 1% 0;
     padding: 0 44vw;
 }
 
@@ -28,4 +19,35 @@
 .social-icons-container svg:hover {
     opacity: 0.5; /* Opacity value on hover */
 }
+
+
+@media only screen and (max-width: 600px) {
+    .social-icons-container {
+        padding: 0 20vw;
+        margin: 5% 0%;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .social-icons-container {
+        padding: 0 20vw;
+        margin: 5% 0%;
+    }
+}
+
+
+@media only screen and (min-width: 768px) {
+    .social-icons-container {
+        padding: 0 30vw;
+        margin: 5% 0%;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .social-icons-container {
+        padding: 0 44vw;
+        margin: 1% 0;
+    }
+}
+
 

@@ -1,1 +1,0 @@
-export const baseURL = process.env.NODE_ENV === 'development' ? "https://localhost:7232" : null; // TODO insert production base url.

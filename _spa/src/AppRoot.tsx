@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAssets, fetchWebsiteBodyText, fetchWorkExperience, selectContent, selectProfilePicture } from './slices/content.slice';
 import { AppDispatch } from './store/store';
 import IntroductionSection from './components/Sections/IntroductionSection/IntroductionSection';
-import DarkModeToggle from './components/DarkModeToggle/DarkModeToggle';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import CssBaseline from '@mui/material/CssBaseline';
-import { themeSelector } from './themes/themes';
-
-import "./AppRoot.css";
+import { Link } from 'react-scroll'
 import { FooterSection } from './components/Sections/FooterSection/FooterSection';
-import { WorkExperienceSection } from './components/WorkExperienceSection/WorkExperienceSection';
+import { WorkExperienceSection } from './components/Sections/WorkExperienceSection/WorkExperienceSection';
 import { ColorRing } from 'react-loader-spinner';
+import "./AppRoot.css";
 
 export const AppRoot = () => {
-    const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
     const dispatch = useDispatch<AppDispatch>();
 
-    const theme = themeSelector(themeMode);
     const profilePictureAsset = useSelector(selectProfilePicture);
     const { assets, body, workExperience, loadingState } = useSelector(selectContent);
 
@@ -25,9 +19,6 @@ export const AppRoot = () => {
     const emptyBody = !body || !body.name;
     const emptyWorkExperience = !workExperience || workExperience.length === 0;
 
-    const handleThemeChange = (newTheme: 'light' | 'dark') => {
-        setThemeMode(newTheme);
-    };
 
     useEffect(() => {
         if (emptyAssets) dispatch(fetchAssets());
@@ -52,23 +43,16 @@ export const AppRoot = () => {
     } else {
         return (
             <>
-                <ThemeProvider
-                    theme={theme}>
-                    <CssBaseline />
-                    <DarkModeToggle
-                        onThemeChange={handleThemeChange}
+                {!emptyBody && !emptyAssets &&
+                    <IntroductionSection
+                        profilePicture={profilePictureAsset}
+                        name={body.name}
+                        jobTitle={body.jobTitle}
+                        welcomeParagraph={body.welcomeParagraph}
                     />
-                    {!emptyBody && !emptyAssets &&
-                        <IntroductionSection
-                            profilePicture={profilePictureAsset}
-                            name={body.name}
-                            jobTitle={body.jobTitle}
-                            welcomeParagraph={body.welcomeParagraph}
-                        />
-                    }
-                    <WorkExperienceSection workExperience={workExperience} />
-                    <FooterSection />
-                </ThemeProvider>
+                }
+                <WorkExperienceSection workExperience={workExperience} />
+                <FooterSection />
             </>
         )
     }

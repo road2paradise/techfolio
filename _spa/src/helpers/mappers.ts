@@ -4,6 +4,8 @@ import { Asset } from "contentful";
 
 
 // This is to allow me to host content within my public folder.
+// Technically this is being called everytime i map content so this should rather be read in as a redux state initially
+// and then spread to my components later. I just cbf right now lol.
 const getContentData = async () => {
     try {
       const response = await fetch('/content.json');
