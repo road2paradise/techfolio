@@ -2,8 +2,6 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import { Theme, useTheme } from '@mui/material';
 import { Asset } from 'contentful';
-import { Link } from 'react-scroll';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import "./IntroductionSection.css";
 
