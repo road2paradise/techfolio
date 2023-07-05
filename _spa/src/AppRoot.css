@@ -6,6 +6,10 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+html, body {
+    overflow-x:hidden 
+} 
+
 h1 {
     font-size: 64px;
     font-weight: 900;
