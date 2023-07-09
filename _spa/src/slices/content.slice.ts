@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { Error } from "../models/error";
 import { RootState } from "../store/store";
 import { IWebsiteBodyTextFields, IWorkExperienceFields } from '../generated/contentful';
-import { mapAssets, mapWebsiteBodyText, mapWorkExperience } from '../helpers/mappers';
+import { mapSections, mapAssets, mapWebsiteBodyText, mapWorkExperience, Sections } from '../helpers/mappers';
 import { Asset } from 'contentful';
 
 const compareByDate = (a: IWorkExperienceFields, b: IWorkExperienceFields):any => {
@@ -11,57 +11,42 @@ const compareByDate = (a: IWorkExperienceFields, b: IWorkExperienceFields):any =
     return  dateB.getTime() - dateA.getTime();
 };
 
-export const fetchWebsiteBodyText = createAsyncThunk(
-    'content/fetchWebsiteBodyText',
+export const fetchWebsiteContent = createAsyncThunk(
+    'content/fetchWebsiteContent', 
     async () => {
         try {
-        return mapWebsiteBodyText();
-        } catch (error) {
-            throw error;
-        }
-    }
-);
-
-export const fetchAssets = createAsyncThunk(
-    'content/fetchAssets',
-    async () => {
-        try {
-            return await mapAssets();
-        } catch (error) {
-            throw error;
-        }
-    }
-);
-
-export const fetchWorkExperience = createAsyncThunk(
-    'content/fetchWorkExperience',
-    async () => {
-        try {
-            const content = mapWorkExperience();
-            return (await content).sort(compareByDate)
+            const response = await (await fetch('/content.json')).json();
+            const body = await mapWebsiteBodyText(response);
+            const assets = await mapAssets(response);
+            const workExperience = (await mapWorkExperience(response)).sort(compareByDate)
+            const sections = (await mapSections(response));
+            return {
+                body,
+                assets,
+                workExperience,
+                sections
+            }
         } catch (error) {
             throw error;
         }
     }
 )
-export interface ContentState {
+
+
+export type Content = {
     body: IWebsiteBodyTextFields,
+    sections: Sections[]
     assets: Asset[],
-    workExperience: IWorkExperienceFields[],
+    workExperience: IWorkExperienceFields[]
+}
+export interface ContentState {
+    content?: Content,
     loadingState: "HAS_NOT_LOADED" | "IS_LOADING" | "HAS_LOADED",
     error?: Error,
 }
 
 const initialState = {
-    body: {
-        greetings: [],
-        welcomeParagraph: "",
-        name: "",
-        jobTitle: "",
-        quotes: [],
-    },
-    assets: [],
-    workExperience: [],
+    content: undefined,
     loadingState: "HAS_NOT_LOADED",
     error: undefined,
 } as ContentState
@@ -73,43 +58,24 @@ export const contentSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchWebsiteBodyText.fulfilled, (state, action) => {
-                state.body = action.payload[0]    
+            .addCase(fetchWebsiteContent.fulfilled, (state, action) => {
+                state.content = action.payload
                 state.loadingState = "HAS_LOADED"
             })
-            .addCase(fetchWebsiteBodyText.rejected, (state, action) => {
-                state.loadingState = "HAS_LOADED"
+            .addCase(fetchWebsiteContent.rejected, (state, action) => {
                 state.error = action.payload as Error
+                state.loadingState = "HAS_LOADED"
             })
-            .addCase(fetchWebsiteBodyText.pending, (state, _) => {
+            .addCase(fetchWebsiteContent.pending, (state, action) => {
                 state.loadingState = "IS_LOADING"
-            })
-            .addCase(fetchAssets.pending, (state, _) => {
-                state.loadingState = "IS_LOADING"
-            })
-            .addCase(fetchAssets.fulfilled, (state, action) => {
-                state.assets = action.payload
-                state.loadingState = "HAS_LOADED"
-            })
-            .addCase(fetchAssets.rejected, (state, action) => {
-                state.loadingState = "HAS_LOADED"
-                state.error = action.payload as Error
-            })
-            .addCase(fetchWorkExperience.pending, (state, _) => {
-                state.loadingState = "IS_LOADING"
-            })
-            .addCase(fetchWorkExperience.fulfilled, (state, action) => {
-                state.workExperience = action.payload
-                state.loadingState = "HAS_LOADED"
-            })
-            .addCase(fetchWorkExperience.rejected, (state, action) => {
-                state.loadingState = "HAS_LOADED"
-                state.error = action.payload as Error
             })
   }
 })
 
-export const selectContent = (state: RootState): ContentState => state.content;
-export const selectProfilePicture = (state: RootState): Asset => state.content.assets.filter(a => a.fields.file?.contentType!.toString().toLowerCase().includes("image"))[0];
-export const selectCV = (state: RootState): Asset => state.content.assets.filter(a => a.sys.type.toLowerCase().includes("pdf"))[0];
+export const selectContent = (state: RootState): Content | undefined => state.content.content;
+export const selectBody = (state: RootState): IWebsiteBodyTextFields | undefined => state.content.content?.body;
+export const selectWorkExperience = (state: RootState): IWorkExperienceFields[] | undefined => state.content.content?.workExperience;
+export const selectAssets = (state: RootState): Asset[] | undefined => state.content.content?.assets;
+export const selectProfilePicture = (state: RootState): Asset | undefined => state.content.content?.assets.filter(a => a.fields.title!.toString().toLowerCase().includes("profile picture"))[0];
+export const selectAboutSection = (state: RootState): Sections | undefined => state.content.content?.sections.filter(s => s.title?.toLowerCase() === "about")[0]
 export default contentSlice.reducer

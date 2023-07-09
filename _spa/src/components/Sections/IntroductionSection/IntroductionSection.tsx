@@ -1,35 +1,32 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
-import { Theme, useTheme } from '@mui/material';
-import { Asset } from 'contentful';
+import { useSelector } from 'react-redux';
+import { selectBody, selectProfilePicture } from '../../../slices/content.slice';
 
 import "./IntroductionSection.css";
 
-type IntroductionSectionProps = {
-    profilePicture: Asset;
-    jobTitle: string;
-    name: string;
-    welcomeParagraph: string
-};
+export default function IntroductionSection() {
+    const profilePicture = useSelector(selectProfilePicture);
+    const body = useSelector(selectBody);
 
-export default function IntroductionSection({
-    profilePicture,
-    name,
-    jobTitle,
-    welcomeParagraph,
-}: IntroductionSectionProps) {
-    const theme = useTheme<Theme>();
-    const isDark = theme.palette.mode === 'dark';
-    return (
-        <>
-            <section className="introduction-section">
-                <div className={isDark ? "black-section" : "grey-section"} />
-                <div>
-                    {<Avatar className="profile-avatar" alt={profilePicture.fields.title?.toString()} src={profilePicture.fields.file?.url?.toString()} />}
-                    <h2 className="profile-name-jobtitle-section">{name}<b> {"|"} {jobTitle}</b></h2>
-                    <p className="welcome-paragraph-section">{welcomeParagraph}</p>
-                </div>
+    if (!profilePicture || !body) {
+        return null
+    } else {
+        return (
+            <section className="section introduction content">
+                <div className="grey-section" />
+                {body && profilePicture &&
+                    <>
+                        <div className="profile-container">
+                            <Avatar className="profile-avatar" alt={profilePicture.fields.title?.toString()} src={profilePicture.fields.file?.url?.toString()} />
+                        </div>
+                        <h1 className="title">{body.name}<b> {"|"} {body.jobTitle}</b></h1>
+                        <div className="content is-medium">
+                            <p>{body.welcomeParagraph}</p>
+                        </div>
+                    </>
+                }
             </section>
-        </>
-    );
+        );
+    }
 };

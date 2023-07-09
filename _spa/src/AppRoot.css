@@ -8,26 +8,6 @@
 
 html, body {
     overflow-x:hidden 
-} 
-
-h1 {
-    font-size: 64px;
-    font-weight: 900;
-}
-
-h2 {
-    font-size: 40px;
-    font-weight: 400;
-    text-align: center;
-}
-
-h3 {
-    text-align: center;
-
-}
-
-p {
-    text-align: center;
 }
 
 .loader-container {
@@ -38,16 +18,16 @@ p {
     align-items: center;
 }
 
-p a {
+a {
     position: relative;
     color: #000;
     text-decoration: none;
 }
-p a:hover {
+a:hover {
     color: #000;
 }
 
-p a::before {
+a::before {
     content: "";
     position: absolute;
     display: block;
@@ -61,6 +41,16 @@ p a::before {
     transition: transform 0.3s ease;
 }
 
-p a:hover::before {
+a:hover::before {
 transform: scaleX(1);
+}
+
+.photography {
+    background-color: blue
+}
+.projects {
+    background-color: black
+}
+.contact-me {
+    background-color: white;
 }
