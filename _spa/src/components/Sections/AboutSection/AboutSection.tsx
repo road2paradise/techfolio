@@ -28,13 +28,12 @@ export const AboutSection = () => {
         }
     }, [section, section?.assets])
 
-    if (!images || images.length === 0 || !section) {
+    if (images.length === 0 || !section) {
         return null
     } else {
         return (
-            <section className="section is-large about-me tile is-ancestor">
+            <section className="section is-medium about-me tile is-ancestor">
                 <div className="tile is-vertical">
-                    <div className="tile is-child is-2 "></div>
                     <div className="tile is-child content">
                         <p className="title">About me</p>
                         <p dangerouslySetInnerHTML={{ __html: dompurify.sanitize(documentToHtmlString(section.content) ?? "", { FORCE_BODY: true }) }}></p>
@@ -43,7 +42,8 @@ export const AboutSection = () => {
                 <div className="tile is-3 is-vertical">
                     <WithFadeAnimation
                         direction="horizontal"
-                        duration={1000}
+                        duration={500}
+                        delay={0}
                         children={<FlipAnimationImage
                             {...images[0]}
                         />}
@@ -51,7 +51,8 @@ export const AboutSection = () => {
                     <div className="container is-child is-hidden-touch" />
                     <WithFadeAnimation
                         direction="vertical"
-                        duration={1000}
+                        duration={500}
+                        delay={750}
                         children={<FlipAnimationImage
                             {...images[1]}
                         />}
@@ -61,7 +62,8 @@ export const AboutSection = () => {
                     <div className="container is-hidden-touch" />
                     <WithFadeAnimation
                         direction="horizontal"
-                        duration={1000}
+                        duration={500}
+                        delay={1500}
                         reverse
                         children={<FlipAnimationImage
                             {...images[2]}

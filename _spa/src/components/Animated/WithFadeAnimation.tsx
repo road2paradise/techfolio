@@ -2,6 +2,7 @@ import { a, useInView, useSpring } from '@react-spring/web';
 import React, { CSSProperties } from 'react'
 
 export type WithFadeAnimationProps = {
+  delay?: number
   duration?: number;
   reverse?: boolean;
   direction: "horizontal" | "vertical";
@@ -20,7 +21,7 @@ type DirectionStyle = {
   }
 }
 
-export const WithFadeAnimation = ({ duration, direction, reverse, children }: WithFadeAnimationProps) => {
+export const WithFadeAnimation = ({ duration, direction, reverse, delay, children }: WithFadeAnimationProps) => {
   const [ref, inView] = useInView()
   const pixelDirection = reverse ? "100px" : "-100px"
   const movement: DirectionStyle = direction === "horizontal" ?
@@ -38,6 +39,7 @@ export const WithFadeAnimation = ({ duration, direction, reverse, children }: Wi
     }
 
   const animationStyle = useSpring({
+    delay,
     config: { duration },
     from: { opacity: 0, x: movement.x?.from, y: movement.y?.from },
     to: {
