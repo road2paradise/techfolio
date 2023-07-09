@@ -1,0 +1,19 @@
+.container {
+    position: relative;
+    will-change: transform, opacity;
+    top: 0;
+    width: 100%; /* Match the width of the parent */
+    height: 250px; /* Set the desired height */
+}
+.image, .flipped-image {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.flipped-image {
+    display: flex;
+    justify-content: center;
+    border-color: black;
+    align-items: center;
+}

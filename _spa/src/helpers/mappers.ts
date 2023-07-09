@@ -1,42 +1,43 @@
-import { IWebsiteBodyTextFields, IWorkExperienceFields } from "../generated/contentful";
+import { IImage, ISectionFields, IWebsiteBodyTextFields, IWorkExperienceFields } from "../generated/contentful";
 import { Document } from "@contentful/rich-text-types";
 import { Asset } from "contentful";
 
+export interface Sections extends ISectionFields {
+    assets: Asset[]
+}
 
-// This is to allow me to host content within my public folder.
-// Technically this is being called everytime i map content so this should rather be read in as a redux state initially
-// and then spread to my components later. I just cbf right now lol.
-const getContentData = async () => {
-    try {
-      const response = await fetch('/content.json');
-      if (!response.ok) {
-        throw new Error('Failed to fetch content data');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-};
-export const mapWebsiteBodyText =  async (): Promise<IWebsiteBodyTextFields[]> => {
-    const content = await getContentData();
-    return content
-        .filter((entry: any) => entry.sys.contentType?.sys.id === "websiteBodyText")
+export const mapSections = async (content: any): Promise<Sections[]> => {
+    return content.filter((entry: any) => entry.sys.contentType?.sys.id === "section")
         .map((entry: any) => {
-            const { fields } = entry;            
+            const { fields } = entry;
+            /* Because im noob :( */
+            const imageId = fields.images.map((x: IImage) => x.sys.id);
+            const entryId = content.filter((i: any) => imageId.includes(i.sys.id)).map((x: any) => x.fields.image.sys.id);
+            const assets = content.filter((i: any) => entryId.includes(i.sys.id));
             return {
-            jobTitle: fields.jobTitle ?? '',
-            name: fields.name ?? '',
-            welcomeParagraph: fields.welcomeParagraph ?? '',
-            greetings: fields.greetings ?? [],
-            quotes: fields.quotes ?? [],
-            };
+                title: fields.title ?? "",
+                content: fields.content ?? "",
+                images: fields.images ?? "",
+                assets: assets
+            }
         });
 }
 
-export const mapWorkExperience = async (): Promise<IWorkExperienceFields[]> => {
-    const content = await getContentData();
+
+export const mapWebsiteBodyText = async (content: any): Promise<IWebsiteBodyTextFields> => {
+  const filteredEntries = content.filter((entry: any) => entry.sys.contentType?.sys.id === "websiteBodyText");
+  const { fields } = filteredEntries[0];
+
+  return {
+      jobTitle: fields.jobTitle ?? '',
+      name: fields.name ?? '',
+      welcomeParagraph: fields.welcomeParagraph ?? '',
+      greetings: fields.greetings ?? [],
+      quotes: fields.quotes ?? [],
+  };
+};
+
+export const mapWorkExperience = async (content: any): Promise<IWorkExperienceFields[]> => {
     return content
     .filter((entry: any) => entry.sys.contentType?.sys.id === "workExperience")
     .map((entry: any) => {
@@ -53,9 +54,8 @@ export const mapWorkExperience = async (): Promise<IWorkExperienceFields[]> => {
 }
 
 
-export const mapAssets = async (): Promise<Asset[]> => {
-    const content = await getContentData();
+export const mapAssets = async (content: any): Promise<Asset[]> => {
     return content
       .filter((entry: any) => entry.sys.type === "Asset")
       .map((entry: any) => entry as Asset);
-  };
+};

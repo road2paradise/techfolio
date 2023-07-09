@@ -2,23 +2,15 @@ import dompurify from 'dompurify';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import WorkIcon from '@mui/icons-material/Work';
 import { format } from 'date-fns';
-import { Theme, useTheme } from '@mui/material/styles';
-import { IWorkExperienceFields } from '../../../generated/contentful';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 
 import "./WorkExperienceSection.css";
 import 'react-vertical-timeline-component/style.min.css';
+import { useSelector } from 'react-redux';
+import { selectWorkExperience } from '../../../slices/content.slice';
 
-type WorkExperienceSectionProps = {
-    workExperience: IWorkExperienceFields[];
-}
-
-export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionProps) => {
-    const theme = useTheme<Theme>();
-    const isDark = theme.palette.mode === 'dark';
-    if (!workExperience) {
-        return null
-    }
+export const WorkExperienceSection = () => {
+    const workExperience = useSelector(selectWorkExperience);
     const formatDate = (date: string) => {
         var formattedDate = format(new Date(date), 'MMM yyyy');
         if (formattedDate === "Jan 0001") {
@@ -26,26 +18,30 @@ export const WorkExperienceSection = ({ workExperience }: WorkExperienceSectionP
         }
         return formattedDate;
     };
-    return (
-        <div className="workExperience vertical-timeline-container">
-            <h1 className="timeline-section-header">Work Experience</h1>
-            <VerticalTimeline
-                lineColor='#d1cdcd'>
-                {workExperience.map(x => (
-                    <VerticalTimelineElement
-                        key={x.companyName}
-                        className="vertical-timeline-element--work"
-                        contentStyle={isDark ? { background: 'black', color: 'white', borderRadius: "15px", outline: '2px solid white' } : { background: '#d1cdcd', color: 'black', borderRadius: "15px" }}
-                        contentArrowStyle={isDark ? { borderRight: '7px solid  white', color: "white" } : { borderRight: '7px solid #d1cdcd', color: "#d1cdcd" }}
-                        date={`${formatDate(x.startDate)} - ${x.endDate ? formatDate(x.endDate) : "Present"}`}
-                        iconStyle={isDark ? { background: 'black', color: 'white' } : { background: '#d1cdcd', color: 'black' }}
-                        icon={<WorkIcon />}>
-                        <h1>{x.jobTitle}</h1>
-                        <h3>{x.companyName}</h3>
-                        {x.description && <span dangerouslySetInnerHTML={{ __html: dompurify.sanitize(documentToHtmlString(x.description) ?? "", { FORCE_BODY: true }) }} />}
-                    </VerticalTimelineElement>
-                ))}
-            </VerticalTimeline>
-        </div>
-    )
+    if (!workExperience) {
+        return null
+    } else {
+        return (
+            <section className="content work-experience vertical-timeline-container">
+                <h1 className="title has-text-centered timeline-section-header">Work Experience</h1>
+                <VerticalTimeline
+                    lineColor='#d1cdcd'>
+                    {workExperience.map(x => (
+                        <VerticalTimelineElement
+                            key={x.companyName}
+                            className="vertical-timeline-element--work content"
+                            contentStyle={{ background: '#d1cdcd', color: 'black', borderRadius: "15px" }}
+                            contentArrowStyle={{ borderRight: '7px solid #d1cdcd', color: "#d1cdcd" }}
+                            date={`${formatDate(x.startDate)} - ${x.endDate ? formatDate(x.endDate) : "Present"}`}
+                            iconStyle={{ background: '#d1cdcd', color: 'black' }}
+                            icon={<WorkIcon />}>
+                            <h1 className="title">{x.jobTitle}</h1>
+                            <h3 className="title">{x.companyName}</h3>
+                            {x.description && <span dangerouslySetInnerHTML={{ __html: dompurify.sanitize(documentToHtmlString(x.description) ?? "", { FORCE_BODY: true }) }} />}
+                        </VerticalTimelineElement>
+                    ))}
+                </VerticalTimeline>
+            </section>
+        )
+    }
 }

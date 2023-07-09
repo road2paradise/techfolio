@@ -3,6 +3,71 @@
 import { Asset, Entry } from "contentful";
 import { Document } from "@contentful/rich-text-types";
 
+export interface IImageFields {
+  /** Image */
+  image: Asset;
+
+  /** Caption */
+  caption: string;
+
+  /** ImageType */
+  imageType:
+    | "About"
+    | "Introduction"
+    | "WorkExperience"
+    | "Projects"
+    | "Contact";
+}
+
+/** Image used in my personal website */
+
+export interface IImage extends Entry<IImageFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "image";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
+export interface ISectionFields {
+  /** Title */
+  title?: string | undefined;
+
+  /** Content */
+  content: Document;
+
+  /** Images */
+  images?: IImage[] | undefined;
+}
+
+/** Each section of my website */
+
+export interface ISection extends Entry<ISectionFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "section";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export interface IWebsiteBodyTextFields {
   /** JobTitle */
   jobTitle: string;
@@ -56,7 +121,7 @@ export interface IWorkExperienceFields {
   endDate?: string | undefined;
 
   /** Description */
-  description: Document | undefined
+  description: Document;
 }
 
 /** This is a section in my techfolio detailing my work experience. */
@@ -78,9 +143,13 @@ export interface IWorkExperience extends Entry<IWorkExperienceFields> {
   };
 }
 
-export type CONTENT_TYPE = "websiteBodyText" | "workExperience";
+export type CONTENT_TYPE =
+  | "image"
+  | "section"
+  | "websiteBodyText"
+  | "workExperience";
 
-export type IEntry = IWebsiteBodyText | IWorkExperience;
+export type IEntry = IImage | ISection | IWebsiteBodyText | IWorkExperience;
 
 export type LOCALE_CODE = "en-US";
 

@@ -1,24 +1,21 @@
+.introduction {
+    background-color: white;
+    margin-top: 3.25rem;
+}
+
+.introduction h1, .introduction p{
+    text-align: center;
+}
 .grey-section {
     background-color: #d1cdcd;
     height: 50vh;
     display: block;
 }
 
-.white-section {
-    height: 50%;
-    text-align: center;
-}
-
 .profile-name-jobtitle-section {
     font-weight: 300;
     text-transform: uppercase;
     margin: 60px auto 0;
-}
-
-.welcome-paragraph-section {
-    width: 75vw;
-    margin: 20px auto 0;
-    text-overflow: ellipsis;
 }
 
 .scroll-arrow {
@@ -42,7 +39,7 @@
 
 
 @media only screen and (max-width: 600px) {
-    .introduction-section .profile-avatar {
+    .profile-container .profile-avatar {
         width: 60vw;
         margin: -30% auto 0;
         height: auto;
@@ -63,7 +60,7 @@
 }
 
 @media only screen and (min-width: 600px) {
-    .introduction-section .profile-avatar {
+    .profile-container .profile-avatar {
         width: 60vw;
         margin: -30% auto 0;
         height: auto;
@@ -75,7 +72,7 @@
 
 
 @media only screen and (min-width: 768px) {
-    .introduction-section .profile-avatar {
+    .profile-container .profile-avatar {
         width: 60vw;
         margin: -30% auto 0;
         height: auto;
@@ -86,7 +83,7 @@
 }
 
 @media only screen and (min-width: 992px) {
-    .introduction-section .profile-avatar {
+    .profile-container .profile-avatar {
         width: 350px;
         margin: -10% auto 0;
         height: auto;
