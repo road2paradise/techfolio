@@ -30,12 +30,9 @@ def lambda_handler(event, context):
     for asset in assets:
         data.append(asset.raw)
 
-    # Specify the file path where you want to write the JSON data
-    # Upload data to S3 bucket
     bucket_name = 'techfolio'
     file_name = 'content.json'
 
-    # Filter out information that we dont want to expose.
     filtered_array = []
     for item in data:
         new_item = item.copy()
