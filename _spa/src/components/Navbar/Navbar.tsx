@@ -28,7 +28,6 @@ const Navbar = () => {
                         <NavItem key={navBarItem.title} {...navBarItem} />
                     ))}
                 </div>
-
             </div>
         </nav>
     )

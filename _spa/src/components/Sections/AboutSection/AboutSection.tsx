@@ -40,36 +40,11 @@ export const AboutSection = () => {
                     </div>
                 </div>
                 <div className="tile is-3 is-vertical">
-                    <WithFadeAnimation
-                        direction="horizontal"
-                        duration={500}
-                        delay={0}
-                        children={<FlipAnimationImage
-                            {...images[0]}
-                        />}
-                    />
-                    <div className="container is-child is-hidden-touch" />
-                    <WithFadeAnimation
-                        direction="vertical"
-                        duration={500}
-                        delay={750}
-                        children={<FlipAnimationImage
-                            {...images[1]}
-                        />}
-                    />
+                    <img src={images[0].images.firstImage.src} />
+                    <img src={images[1].images.firstImage.src} />
                 </div>
                 <div className="tile is-3 is-vertical" >
-                    <div className="container is-hidden-touch" />
-                    <WithFadeAnimation
-                        direction="horizontal"
-                        duration={500}
-                        delay={1500}
-                        reverse
-                        children={<FlipAnimationImage
-                            {...images[2]}
-                        />}
-                    />
-                    <div className="container is-hidden-touch" />
+                    <img src={images[2].images.firstImage.src} />
                 </div>
             </section >
         )

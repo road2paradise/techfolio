@@ -8,9 +8,5 @@ export const navBarItems: NavItemProps[] = [
     {
         title: "about",
         to: "about-me"
-    },
-    {
-        title: "work experience",
-        to: "work-experience"
-    },
+    }
 ]
